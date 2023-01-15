@@ -12,8 +12,15 @@
     "vue": "^3.2.45"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@vitejs/plugin-vue": "^4.0.0",
-    "typescript": "^4.9.3",
+    "eslint": "^8.32.0",
+    "eslint-config-standard-with-typescript": "^27.0.1",
+    "eslint-plugin-import": "^2.27.4",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "typescript": "^4.9.4",
     "vite": "^4.0.0",
     "vue-tsc": "^1.0.11"
   }
