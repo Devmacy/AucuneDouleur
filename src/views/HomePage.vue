@@ -4,18 +4,12 @@ import MyHeaders from '@/components/MyHeaders.vue'
 </script>
 
 <template>
-  <MyHeaders style="width: 100vw;background: aqua"/>
-  <div style="display: flex;">
-    <el-row>
-      <el-col span="8">
-        <NavigationBar style="background: dodgerblue;width: 100%"/>
-      </el-col>
+  <MyHeaders/>
+  <div style="display: flex;justify-content: left">
+    <NavigationBar/>
 
-      <el-col span="16">
-        <!-- 路由匹配到的组件将渲染在这里 -->
-        <router-view></router-view>
-      </el-col>
-    </el-row>
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
   </div>
 </template>
 
