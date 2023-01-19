@@ -2,9 +2,8 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <div>dashboard</div>
 </template>
 
-<style scoped lang="scss">
-
+<style scoped>
 </style>
