@@ -9,8 +9,8 @@ const isNight = ref(false)
   <el-switch
       v-model="isNight"
       inline-prompt
-      active-icon="Sunny"
-      inactive-icon="Moon"
+      active-icon="Moon"
+      inactive-icon="Sunny"
       @change="toggleDark"
   />
 </template>
