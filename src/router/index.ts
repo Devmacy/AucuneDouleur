@@ -7,8 +7,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'homePage',
-    component: async () => await import('@/views/homePage.vue'),
     children: [
       {
         path: '/dashboard',
@@ -16,6 +14,12 @@ const routes = [
         component: async () => await import('@/components/DashBoard.vue')
       }
     ]
+  },
+
+  {
+    path: '/selectColor',
+    name: 'selectColor',
+    component: async () => await import('@/views/SelectColor.vue')
   }
 ]
 export default createRouter({

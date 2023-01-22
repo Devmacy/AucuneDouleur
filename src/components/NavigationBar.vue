@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <el-menu>
+  <el-menu :router="true">
 
-    <el-menu-item index="1">
+    <el-menu-item index="/dashboard">
       <template #title>
         <el-icon>
           <House/>
@@ -13,7 +13,7 @@
       </template>
     </el-menu-item>
 
-    <el-menu-item index="2">
+    <el-menu-item index="/selectColor">
       <template #title>
         <el-icon>
           <PieChart/>
