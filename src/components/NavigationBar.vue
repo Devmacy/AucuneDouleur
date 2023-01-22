@@ -1,64 +1,67 @@
 <script setup lang="ts">
-import { Fold, Expand } from '@element-plus/icons-vue'
+import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
 
 // 菜单状态
 import { useMenuStore } from '@/store'
-
 const menuStatus = useMenuStore()
 
 </script>
 
 <template>
-  <el-menu :router="true" :collapse="menuStatus.isCollapsed">
+  <el-menu class="el-menu-container" :router="true" :collapse="menuStatus.isCollapsed">
 
-    <el-button :icon="menuStatus.isCollapsed ? Expand :Fold " @click="menuStatus.changeCollapse()"/>
+    <el-button :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
 
-    <el-menu-item index="/dashboard">
+    <el-menu-item index="dashboard">
+      <el-icon>
+        <House/>
+      </el-icon>
       <template #title>
-        <el-icon>
-          <House/>
-        </el-icon>
         <span>首页</span>
       </template>
     </el-menu-item>
 
-    <el-menu-item index="/selectColor">
+    <el-menu-item index="selectColor">
+      <el-icon>
+        <PieChart/>
+      </el-icon>
       <template #title>
-        <el-icon>
-          <PieChart/>
-        </el-icon>
         <span>取色板</span>
       </template>
     </el-menu-item>
 
     <el-menu-item index="3">
+      <el-icon>
+        <FullScreen/>
+      </el-icon>
       <template #title>
-        <el-icon>
-          <FullScreen/>
-        </el-icon>
         <span>二维码</span>
       </template>
     </el-menu-item>
 
     <el-menu-item index="4">
+      <el-icon>
+        <Timer/>
+      </el-icon>
       <template #title>
-        <el-icon>
-          <Timer/>
-        </el-icon>
         <span>时间处理</span>
       </template>
     </el-menu-item>
 
     <el-menu-item index="5">
+      <el-icon>
+        <Setting/>
+      </el-icon>
       <template #title>
-        <el-icon>
-          <Setting/>
-        </el-icon>
         <span>设置</span></template>
     </el-menu-item>
 
   </el-menu>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.el-menu-container{
+  width: 100%;
+  height: 100%;
+}
 </style>
