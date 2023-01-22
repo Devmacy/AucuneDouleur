@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import NavigationBar from '@/components/NavigationBar.vue'
 import MyHeaders from '@/components/MyHeaders.vue'
-
-// 菜单状态
-import { useMenuStore } from '@/store'
-const menuStatus = useMenuStore()
 </script>
 
 <template>
@@ -12,7 +8,7 @@ const menuStatus = useMenuStore()
 
     <el-container class="container">
 
-      <el-aside class="nav-container" :class="[menuStatus.isCollapsed ? 'nav-container-collapsed' : 'nav-container-expanded']">
+      <el-aside class="nav-container">
         <NavigationBar />
       </el-aside>
 
@@ -44,14 +40,6 @@ const menuStatus = useMenuStore()
   .container{
     width: 100%;
     height: 100%;
-
-    .nav-container-collapsed{
-      width: calc( var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2 );
-    }
-
-    .nav-container-expanded{
-    }
-
   }
 }
 </style>

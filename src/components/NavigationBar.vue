@@ -60,7 +60,11 @@ const menuStatus = useMenuStore()
 </template>
 
 <style scoped lang="scss">
-.el-menu-container{
+.el-menu-container {
+  height: 100%;
+}
+
+.el-menu-container:not(.el-menu--collapse) {
   width: 100%;
   height: 100%;
 }
