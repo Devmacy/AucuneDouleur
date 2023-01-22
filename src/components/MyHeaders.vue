@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { toggleDark } from '@/darkTheme'
 import { reactive, ref } from 'vue'
+import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
+
+// 菜单状态
+import { useMenuStore } from '@/store'
+
+const menuStatus = useMenuStore()
 
 const isNight = ref(false)
 
@@ -26,6 +32,8 @@ function loadStyles (url) {
 </script>
 
 <template>
+  <el-button :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
+
   <el-switch
       v-model="isNight"
       inline-prompt
@@ -44,5 +52,5 @@ function loadStyles (url) {
   </el-select>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 </style>

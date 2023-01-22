@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
-
 // 菜单状态
 import { useMenuStore } from '@/store'
 const menuStatus = useMenuStore()
@@ -8,9 +6,7 @@ const menuStatus = useMenuStore()
 </script>
 
 <template>
-  <el-menu class="el-menu-container" :router="true" :collapse="menuStatus.isCollapsed">
-
-    <el-button :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
+  <el-menu :collapse-transition="false" class="el-menu-container" :router="true" :collapse="menuStatus.isCollapsed">
 
     <el-menu-item index="dashboard">
       <el-icon>
