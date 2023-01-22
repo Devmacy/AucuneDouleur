@@ -4,20 +4,50 @@
 <template>
   <el-menu>
 
-    <el-menu-item index="1">首页1</el-menu-item>
+    <el-menu-item index="1">
+      <template #title>
+        <el-icon>
+          <House/>
+        </el-icon>
+        <span>首页</span>
+      </template>
+    </el-menu-item>
 
-    <el-menu-item index="2">功能2</el-menu-item>
+    <el-menu-item index="2">
+      <template #title>
+        <el-icon>
+          <PieChart/>
+        </el-icon>
+        <span>取色板</span>
+      </template>
+    </el-menu-item>
 
-    <el-sub-menu index="3">
-      <template #title>功能3</template>
-      <el-menu-item index="3-1">1</el-menu-item>
-      <el-menu-item index="3-2">2</el-menu-item>
-      <el-menu-item index="3-3">3</el-menu-item>
-    </el-sub-menu>
+    <el-menu-item index="3">
+      <template #title>
+        <el-icon>
+          <FullScreen/>
+        </el-icon>
+        <span>二维码</span>
+      </template>
+    </el-menu-item>
 
-    <el-menu-item index="4">功能4</el-menu-item>
+    <el-menu-item index="4">
+      <template #title>
+        <el-icon>
+          <Timer/>
+        </el-icon>
+        <span>时间处理</span>
+      </template>
+    </el-menu-item>
 
-    <el-menu-item index="5">功能5</el-menu-item>
+    <el-menu-item index="5">
+      <template #title>
+        <el-icon>
+          <Setting/>
+        </el-icon>
+        <span>设置</span></template>
+    </el-menu-item>
+
   </el-menu>
 </template>
 
