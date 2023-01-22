@@ -18,7 +18,7 @@ const menuStatus = useMenuStore()
 
       <el-container>
 
-        <el-header class="head-container">
+        <el-header class="flex-row-ac">
           <MyHeaders/>
         </el-header>
 
@@ -26,7 +26,7 @@ const menuStatus = useMenuStore()
           <router-view></router-view>
         </el-main>
 
-        <el-footer>Footer</el-footer>
+        <el-footer class="flex-row-ac">Footer</el-footer>
 
       </el-container>
 
@@ -44,11 +44,6 @@ const menuStatus = useMenuStore()
   .container{
     width: 100%;
     height: 100%;
-
-    .head-container{
-      display: flex;
-      align-items: center;
-    }
 
     .nav-expanded{
       width: 200px;
