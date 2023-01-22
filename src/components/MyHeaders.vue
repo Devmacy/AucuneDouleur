@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import { toggleDark } from '@/darkTheme'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 const isNight = ref(false)
+
+const currentTheme = ref('default')
+
+const themeOptions = reactive([
+  { value: 'default', label: '默认' },
+  { value: 'red', label: '中国红' },
+  { value: 'purple', label: '幽兰紫' }])
+
+function setTheme (e) {
+  loadStyles(`theme/${e}.css`)
+}
 
 function loadStyles (url) {
   const link = document.createElement('link')
@@ -23,7 +34,14 @@ function loadStyles (url) {
       @change="toggleDark"
   />
 
-  <el-button @click="loadStyles('test.css')">change</el-button>
+  <el-select v-model="currentTheme" placeholder="主题" @change="setTheme">
+    <el-option
+        v-for="item in themeOptions"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+    />
+  </el-select>
 </template>
 
 <style scoped>
