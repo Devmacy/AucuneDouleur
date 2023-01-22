@@ -1,8 +1,17 @@
 <script setup lang="ts">
+import { Fold, Expand } from '@element-plus/icons-vue'
+
+// 菜单状态
+import { useMenuStore } from '@/store'
+
+const menuStatus = useMenuStore()
+
 </script>
 
 <template>
-  <el-menu :router="true">
+  <el-menu :router="true" :collapse="menuStatus.isCollapsed">
+
+    <el-button :icon="menuStatus.isCollapsed ? Expand :Fold " @click="menuStatus.changeCollapse()"/>
 
     <el-menu-item index="/dashboard">
       <template #title>
