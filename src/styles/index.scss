@@ -1,0 +1,5 @@
+// 如果你想导入所有样式:
+@use "element-plus/theme-chalk/src/index" as *;
+@use '@/styles/theme/red.scss';
+@use '@/styles/theme/green.scss';
+@use '@/styles/theme/purple.scss';

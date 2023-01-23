@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-// 暂时使用其他方式替代动态更换样式
-// import '@/styles/element/index.scss'
+import '@/styles/index.scss'
 import ElementPlus from 'element-plus'
-import 'element-plus/theme-chalk/src/index.scss'
 import '@/style.css'
 import App from '@/App.vue'
 import router from '@/router'
