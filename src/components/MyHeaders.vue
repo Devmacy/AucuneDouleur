@@ -1,34 +1,63 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
 import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
-import { useMenuStore } from '@/store' // 菜单状态
+import { useMenuStore, useThemeStore } from '@/store' // 菜单状态
 import changeTheme from '@/utils/theme/changeTheme'
+import { useUserStore } from '@/store/user'
 
 const menuStatus = useMenuStore()
-
-// 下拉框默认值
-const currentTheme = ref('default')
-const themeOptions = reactive([
-  { value: 'default', label: '默认' },
-  { value: 'red', label: '中国红' },
-  { value: 'purple', label: '幽兰紫' },
-  { value: 'dark', label: '暗黑' }
-])
+const themeStore = useThemeStore()
+const userStore = useUserStore()
 
 </script>
 
 <template>
-  <el-button :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
+  <div class="flex-row-ac main-container">
+    <div class="left">
+      <div class="collapse">
+        <el-button :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
+      </div>
 
-  <el-select v-model="currentTheme" placeholder="主题" @change="changeTheme($event)">
-    <el-option
-        v-for="item in themeOptions"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-    />
-  </el-select>
+      <div class="breadcrumb">
+
+      </div>
+    </div>
+
+    <div class="flex-row-ac right">
+      <el-select class="theme" v-model="themeStore.currentThemeValue" placeholder="主题"
+                 @change="changeTheme($event)">
+        <el-option
+            v-for="item in themeStore.themeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
+
+      <el-avatar class="avatar" :src="userStore.userAvatarSrc" :size="28"/>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
+.main-container {
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+
+  .left {
+    .collapse {
+      padding: 0 5px 0 0;
+    }
+  }
+
+  .right {
+    .theme {
+      width: 100px;
+    }
+
+    .avatar{
+      margin: 0 0 0 5px;
+    }
+  }
+}
 </style>
