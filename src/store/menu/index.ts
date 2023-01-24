@@ -49,6 +49,14 @@ export const useMenuStore = defineStore('menuStore', {
          */
     getMenuList (): any[] {
       return this.menuList
+    },
+
+    /**
+         * 设置菜单
+         * @param menuList 菜单
+         */
+    setMenuList (menuList: any[]): void {
+      this.menuList = menuList
     }
   }
 })
