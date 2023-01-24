@@ -1,23 +1,9 @@
 <script setup lang="ts">
 import { useMenuStore } from '@/store'
-import { reactive } from 'vue'
+
 // 菜单状态
-
 const menuStatus = useMenuStore()
-
-const menuList = reactive([
-  {
-    routerPath: 'dashboard',
-    menuName: '首页',
-    menuId: '1',
-    icon: 'House',
-    children: [{ routerPath: 'setting', menuName: '设置', menuId: '1-1', icon: 'Setting', children: [] }]
-  },
-  { routerPath: 'selectColor', menuName: '取色板', menuId: '2', icon: 'Edit', children: [] },
-  { routerPath: 'code', menuName: '二维码', menuId: '3', icon: 'Edit', children: [] },
-  { routerPath: 'time', menuName: '时间处理', menuId: '4', icon: 'Edit', children: [] },
-  { routerPath: 'setting', menuName: '设置', menuId: '5', icon: 'Setting', children: [] }
-])
+console.warn(menuStatus.menuList)
 
 function handleOpen () {
 
@@ -33,7 +19,7 @@ function handleClose () {
            :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
            @close="handleClose">
 
-    <template v-for="(menu) in menuList" :key="menu.menuId">
+    <template v-for="(menu) in menuStatus.menuList" :key="menu.menuId">
       <!--  无子集    -->
       <el-menu-item v-if="menu?.children.length === 0" :index="menu.routerPath">
         <el-icon>
