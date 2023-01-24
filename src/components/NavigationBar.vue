@@ -3,7 +3,7 @@ import { useMenuStore } from '@/store'
 
 // 菜单状态
 const menuStatus = useMenuStore()
-console.warn(menuStatus.menuList)
+const menuList = menuStatus.menuList
 
 function handleOpen () {
 
@@ -19,7 +19,7 @@ function handleClose () {
            :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
            @close="handleClose">
 
-    <template v-for="(menu) in menuStatus.menuList" :key="menu.menuId">
+    <template v-for="(menu) in menuList" :key="menu.menuId">
       <!--  无子集    -->
       <el-menu-item v-if="menu?.children.length === 0" :index="menu.routerPath">
         <el-icon>
