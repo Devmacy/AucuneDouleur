@@ -33,7 +33,7 @@ function handleClose () {
            :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
            @close="handleClose">
 
-    <div v-for="(menu) in menuList" :key="menu.menuId">
+    <template v-for="(menu) in menuList" :key="menu.menuId">
       <!--  无子集    -->
       <el-menu-item v-if="menu?.children.length === 0" :index="menu.routerPath">
         <el-icon>
@@ -55,16 +55,17 @@ function handleClose () {
         </template>
 
         <el-menu-item v-for="item in menu.children" :index="item.routerPath" :key="item.menuId">
-          <el-icon>
-            <component :is="item.icon"/>
-          </el-icon>
+
           <template #title>
+            <el-icon>
+              <component :is="item.icon"/>
+            </el-icon>
             <span>{{ item.menuName || '' }}</span>
           </template>
         </el-menu-item>
 
       </el-sub-menu>
-    </div>
+    </template>
 
   </el-menu>
 </template>
