@@ -30,7 +30,7 @@ const goBack = () => {
 
       <el-page-header @back="goBack">
         <template #content>
-          <span class="text-large font-600 mr-3"> {{ route.name || '' }} </span>
+          <span style="color: var(--el-color-primary)"> {{ route.name || '' }} </span>
         </template>
       </el-page-header>
 
