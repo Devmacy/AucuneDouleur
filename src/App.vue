@@ -20,8 +20,8 @@ const localStore = useLocalStore()
 
         <el-container>
 
-          <el-header class="flex-row-ac">
-            <MyHeaders/>
+          <el-header class="flex-row-ac header-container">
+            <MyHeaders />
           </el-header>
 
           <el-main>
@@ -47,6 +47,11 @@ const localStore = useLocalStore()
   .container{
     width: 100%;
     height: 100%;
+
+    .header-container{
+      box-sizing: border-box;
+      border-bottom: 1px solid var(--el-border-color);
+    }
 
     .nav-expanded{
       width: 200px;

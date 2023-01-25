@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useMenuStore } from '@/store'
+import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
+import { useRoute } from 'vue-router'
 
 // 菜单状态
 const menuStatus = useMenuStore()
@@ -11,11 +13,11 @@ function handleOpen () {
 function handleClose () {
 
 }
-
+const route = useRoute()
 </script>
 
 <template>
-  <el-menu :collapse-transition="false" default-active="dashboard" class="el-menu-container"
+  <el-menu :collapse-transition="false" :default-active="route.path" class="el-menu-container"
            :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
            @close="handleClose">
 
@@ -53,12 +55,19 @@ function handleClose () {
       </el-sub-menu>
     </template>
 
+    <el-button class="collapse-container" :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
   </el-menu>
+
 </template>
 
 <style scoped lang="scss">
 .el-menu-container {
   height: 100%;
+
+  .collapse-container{
+    border: none;
+    margin-left: calc(var(--el-menu-base-level-padding) /2);
+  }
 }
 
 .el-menu-container:not(.el-menu--collapse) {

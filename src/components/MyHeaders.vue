@@ -1,21 +1,36 @@
 <script setup lang="ts">
-import { DArrowLeft, DArrowRight } from '@element-plus/icons-vue'
-import { useMenuStore, useThemeStore } from '@/store' // 菜单状态
+import { useThemeStore } from '@/store' // 菜单状态
 import changeTheme from '@/utils/theme/changeTheme'
 import { useUserStore } from '@/store/user'
+import { useRoute, useRouter } from 'vue-router'
 
-const menuStatus = useMenuStore()
 const themeStore = useThemeStore()
 const userStore = useUserStore()
+
+const router = useRouter()
+const route = useRoute()
+
+const goBack = () => {
+  router.push({
+    name: 'dashboard',
+    query: {
+      ...route.query
+    }
+  })
+  console.warn(route)
+}
 
 </script>
 
 <template>
   <div class="flex-row-ac main-container">
-    <div class="left">
-      <div class="collapse">
-        <el-button :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
-      </div>
+    <div class="left flex-row">
+
+      <el-page-header @back="goBack">
+        <template #content>
+          <span class="text-large font-600 mr-3"> Title </span>
+        </template>
+      </el-page-header>
 
       <div class="breadcrumb">
 
