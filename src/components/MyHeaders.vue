@@ -4,11 +4,15 @@ import changeTheme from '@/utils/theme/changeTheme'
 import { useUserStore } from '@/store/user'
 import { useRoute, useRouter } from 'vue-router'
 
+import { CurrentTime } from '@/utils/time/CurrentTime'
+
 const themeStore = useThemeStore()
 const userStore = useUserStore()
 
 const router = useRouter()
 const route = useRoute()
+
+const currentTime = new CurrentTime(new Date())
 
 const goBack = () => {
   router.push({
@@ -18,7 +22,6 @@ const goBack = () => {
     }
   })
 }
-
 </script>
 
 <template>
@@ -27,7 +30,7 @@ const goBack = () => {
 
       <el-page-header @back="goBack">
         <template #content>
-          <span class="text-large font-600 mr-3"> {{route.name || ''}} </span>
+          <span class="text-large font-600 mr-3"> {{ route.name || '' }} </span>
         </template>
       </el-page-header>
 
@@ -36,7 +39,7 @@ const goBack = () => {
       </div>
     </div>
 
-    <div class="flex-row-ac right">
+    <el-space wrap class="flex-row-ac right">
       <el-select class="theme" v-model="themeStore.currentThemeValue" placeholder="主题"
                  @change="changeTheme($event)">
         <el-option
@@ -48,7 +51,10 @@ const goBack = () => {
       </el-select>
 
       <el-avatar class="avatar" :src="userStore.userAvatarSrc" :size="28"/>
-    </div>
+
+      <span
+          class="time-text">{{ `${currentTime.formatterTime('MM')}月/${currentTime.formatterTime('dd')}日/${currentTime.getWeekDay()}` }}</span>
+    </el-space>
   </div>
 </template>
 
@@ -69,8 +75,13 @@ const goBack = () => {
       width: 100px;
     }
 
-    .avatar{
+    .avatar {
       margin: 0 0 0 5px;
+    }
+
+    .time-text {
+      font-size: var(--el-font-size-small);
+      color: var(--el-text-color-secondary);
     }
   }
 }
