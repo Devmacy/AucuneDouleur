@@ -10,7 +10,7 @@ const routes = [
     children: [
       {
         path: '/dashboard',
-        name: 'dashboard',
+        name: '首页',
         component: async () => await import('@/components/DashBoard.vue')
       }
     ]
@@ -18,13 +18,13 @@ const routes = [
 
   {
     path: '/selectColor',
-    name: 'selectColor',
+    name: '取色板',
     component: async () => await import('@/views/SelectColor.vue')
   },
 
   {
     path: '/international',
-    name: 'international',
+    name: '国际化',
     component: async () => await import('@/views/LocalInternational.vue')
   }
 ]

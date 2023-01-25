@@ -12,12 +12,11 @@ const route = useRoute()
 
 const goBack = () => {
   router.push({
-    name: 'dashboard',
+    name: '首页',
     query: {
       ...route.query
     }
   })
-  console.warn(route)
 }
 
 </script>
@@ -28,7 +27,7 @@ const goBack = () => {
 
       <el-page-header @back="goBack">
         <template #content>
-          <span class="text-large font-600 mr-3"> Title </span>
+          <span class="text-large font-600 mr-3"> {{route.name || ''}} </span>
         </template>
       </el-page-header>
 
