@@ -19,60 +19,84 @@ const route = useRoute()
 </script>
 
 <template>
-  <el-menu :collapse-transition="false" :default-active="route.path" class="el-menu-container"
-           :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
-           @close="handleClose">
+  <div class="el-menu-container">
 
-    <template v-for="(menu) in menuList" :key="menu.menuId">
-      <!--  无子集    -->
-      <el-menu-item v-if="menu?.children.length === 0" :index="menu.routerPath">
-        <el-icon>
-          <component :is="menu.icon"/>
-        </el-icon>
-        <template #title>
-          <span>{{ menu.menuName || '' }}</span>
-        </template>
-      </el-menu-item>
+    <div class="menu-container">
+      <el-menu :collapse-transition="false" :default-active="route.path"
+               :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
+               @close="handleClose" class="menu">
 
-      <!--  有子集    -->
-      <el-sub-menu v-if="menu.children.length>0" :index="menu.routerPath">
-
-        <template #title>
-          <el-icon>
-            <component :is="menu.icon"/>
-          </el-icon>
-          <span>{{ menu.menuName || '' }}</span>
-        </template>
-
-        <el-menu-item v-for="item in menu.children" :index="item.routerPath" :key="item.menuId">
-
-          <template #title>
+        <template v-for="(menu) in menuList" :key="menu.menuId">
+          <!--  无子集    -->
+          <el-menu-item v-if="menu?.children.length === 0" :index="menu.routerPath">
             <el-icon>
-              <component :is="item.icon"/>
+              <component :is="menu.icon"/>
             </el-icon>
-            <span>{{ item.menuName || '' }}</span>
-          </template>
-        </el-menu-item>
+            <template #title>
+              <span>{{ menu.menuName || '' }}</span>
+            </template>
+          </el-menu-item>
 
-      </el-sub-menu>
-    </template>
+          <!--  有子集    -->
+          <el-sub-menu v-if="menu.children.length>0" :index="menu.routerPath">
+
+            <template #title>
+              <el-icon>
+                <component :is="menu.icon"/>
+              </el-icon>
+              <span>{{ menu.menuName || '' }}</span>
+            </template>
+
+            <el-menu-item v-for="item in menu.children" :index="item.routerPath" :key="item.menuId">
+
+              <template #title>
+                <el-icon>
+                  <component :is="item.icon"/>
+                </el-icon>
+                <span>{{ item.menuName || '' }}</span>
+              </template>
+            </el-menu-item>
+
+          </el-sub-menu>
+        </template>
+      </el-menu>
+    </div>
 
     <div class="collapse-container">
       <el-button class="button" :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft"
-                 @click="menuStatus.changeCollapse()"><span v-if="!menuStatus.isCollapsed" class="text">收缩</span></el-button>
+                 @click="menuStatus.changeCollapse()"><span v-if="!menuStatus.isCollapsed" class="text">收缩</span>
+      </el-button>
     </div>
-  </el-menu>
-
+  </div>
 </template>
 
 <style scoped lang="scss">
 .el-menu-container {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .menu-container {
+    overflow: auto;
+    flex:1;
+
+    .menu{
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .menu-container::-webkit-scrollbar {
+    display: none;
+  }
 
   .collapse-container {
     width: 100%;
     display: flex;
     justify-content: center;
+    box-sizing: border-box;
+    border-right: solid 1px var(--el-menu-border-color);
 
     .button {
       height: var(--el-menu-item-height);
@@ -86,10 +110,20 @@ const route = useRoute()
   width: 100%;
   height: 100%;
 
+  .menu-container {
+    overflow: auto;
+  }
+
+  .menu-container::-webkit-scrollbar {
+    display: none;
+  }
+
   .collapse-container {
     width: 100%;
     display: flex;
     justify-content: center;
+    box-sizing: border-box;
+    border-right: solid 1px var(--el-menu-border-color);
 
     .button {
       height: var(--el-menu-item-height);
@@ -97,7 +131,7 @@ const route = useRoute()
       justify-content: left;
       width: calc(100% - var(--el-menu-base-level-padding) * 2);
 
-      .text{
+      .text {
         margin: 0 0 0 5px;
       }
     }
