@@ -25,7 +25,7 @@ export const useMenuStore = defineStore('menuStore', {
               routerPath: 'international',
               menuName: '国际化',
               menuId: 'international',
-              icon: 'Setting',
+              icon: 'Bowl',
               children: []
             },
             { routerPath: 'theme', menuName: '主题', menuId: 'theme', icon: 'Setting', children: [] },

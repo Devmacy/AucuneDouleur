@@ -1,38 +1,41 @@
 <script setup lang="ts">
 import NavigationBar from '@/components/NavigationBar.vue'
 import MyHeaders from '@/components/MyHeaders.vue'
+import { useMenuStore, useLocalStore } from '@/store' // 菜单状态
 
-// 菜单状态
-import { useMenuStore } from '@/store'
 const menuStatus = useMenuStore()
+const localStore = useLocalStore()
+
 </script>
 
 <template>
-  <div class="common-layout">
+  <el-config-provider :locale="localStore.lang">
+    <div class="common-layout">
 
-    <el-container class="container">
+      <el-container class="container">
 
-      <el-aside :class="[menuStatus.isCollapsed ? 'nav-collapsed' : 'nav-expanded']">
-        <NavigationBar />
-      </el-aside>
+        <el-aside :class="[menuStatus.isCollapsed ? 'nav-collapsed' : 'nav-expanded']">
+          <NavigationBar />
+        </el-aside>
 
-      <el-container>
+        <el-container>
 
-        <el-header class="flex-row-ac">
-          <MyHeaders/>
-        </el-header>
+          <el-header class="flex-row-ac">
+            <MyHeaders/>
+          </el-header>
 
-        <el-main>
-          <router-view></router-view>
-        </el-main>
+          <el-main>
+            <router-view></router-view>
+          </el-main>
 
-        <el-footer class="flex-row-ac">Footer</el-footer>
+          <el-footer class="flex-row-ac">Footer</el-footer>
+
+        </el-container>
 
       </el-container>
 
-    </el-container>
-
-  </div>
+    </div>
+  </el-config-provider>
 
 </template>
 

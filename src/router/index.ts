@@ -20,6 +20,12 @@ const routes = [
     path: '/selectColor',
     name: 'selectColor',
     component: async () => await import('@/views/SelectColor.vue')
+  },
+
+  {
+    path: '/international',
+    name: 'international',
+    component: async () => await import('@/views/LocalInternational.vue')
   }
 ]
 export default createRouter({
