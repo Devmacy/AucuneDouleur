@@ -10,9 +10,11 @@ const menuList = menuStatus.menuList
 function handleOpen () {
 
 }
+
 function handleClose () {
 
 }
+
 const route = useRoute()
 </script>
 
@@ -55,7 +57,10 @@ const route = useRoute()
       </el-sub-menu>
     </template>
 
-    <el-button class="collapse-container" :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft" @click="menuStatus.changeCollapse()"/>
+    <div class="collapse-container">
+      <el-button class="button" :icon="menuStatus.isCollapsed ? DArrowRight : DArrowLeft"
+                 @click="menuStatus.changeCollapse()"><span v-if="!menuStatus.isCollapsed" class="text">收缩</span></el-button>
+    </div>
   </el-menu>
 
 </template>
@@ -64,14 +69,38 @@ const route = useRoute()
 .el-menu-container {
   height: 100%;
 
-  .collapse-container{
-    border: none;
-    margin-left: calc(var(--el-menu-base-level-padding) /2);
+  .collapse-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .button {
+      height: var(--el-menu-item-height);
+      width: calc(100% - var(--el-menu-base-level-padding) * 2);
+      border: none;
+    }
   }
 }
 
 .el-menu-container:not(.el-menu--collapse) {
   width: 100%;
   height: 100%;
+
+  .collapse-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .button {
+      height: var(--el-menu-item-height);
+      padding: 0 0 0 5px;
+      justify-content: left;
+      width: calc(100% - var(--el-menu-base-level-padding) * 2);
+
+      .text{
+        margin: 0 0 0 5px;
+      }
+    }
+  }
 }
 </style>

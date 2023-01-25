@@ -13,8 +13,8 @@ export const useMenuStore = defineStore('menuStore', {
           children: []
         },
         { routerPath: '/selectColor', menuName: '取色板', menuId: 'selectColor', icon: 'Edit', children: [] },
-        { routerPath: '/code', menuName: '二维码', menuId: 'code', icon: 'Edit', children: [] },
-        { routerPath: '/time', menuName: '时间处理', menuId: 'time', icon: 'Edit', children: [] },
+        // { routerPath: '/code', menuName: '二维码', menuId: 'code', icon: 'Edit', children: [] },
+        // { routerPath: '/time', menuName: '时间处理', menuId: 'time', icon: 'Edit', children: [] },
         {
           routerPath: '/setting',
           menuName: '设置',
@@ -27,9 +27,9 @@ export const useMenuStore = defineStore('menuStore', {
               menuId: 'international',
               icon: 'Bowl',
               children: []
-            },
-            { routerPath: '/theme', menuName: '主题', menuId: 'theme', icon: 'Setting', children: [] },
-            { routerPath: '/user', menuName: '个人信息', menuId: 'user', icon: 'Setting', children: [] }
+            }
+            // { routerPath: '/theme', menuName: '主题', menuId: 'theme', icon: 'Setting', children: [] },
+            // { routerPath: '/user', menuName: '个人信息', menuId: 'user', icon: 'Setting', children: [] }
           ]
         }
       ]// 菜单列表
