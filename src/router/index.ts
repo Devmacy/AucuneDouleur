@@ -26,6 +26,12 @@ const routes = [
     path: '/international',
     name: '国际化',
     component: async () => await import('@/views/LocalInternational.vue')
+  },
+
+  {
+    path: '/user',
+    name: '个人信息',
+    component: async () => await import('@/views/UserInfo.vue')
   }
 ]
 export default createRouter({

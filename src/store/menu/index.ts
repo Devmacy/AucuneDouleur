@@ -27,9 +27,9 @@ export const useMenuStore = defineStore('menuStore', {
               menuId: 'international',
               icon: 'Bowl',
               children: []
-            }
+            },
             // { routerPath: '/theme', menuName: '主题', menuId: 'theme', icon: 'Setting', children: [] },
-            // { routerPath: '/user', menuName: '个人信息', menuId: 'user', icon: 'Setting', children: [] }
+            { routerPath: '/user', menuName: '个人信息', menuId: 'user', icon: 'User', children: [] }
           ]
         }
       ]// 菜单列表

@@ -10,56 +10,49 @@ const localStore = useLocalStore()
 
 <template>
   <el-config-provider :locale="localStore.lang">
-    <div class="common-layout">
 
-      <el-container class="container">
+    <el-container class="common-layout-wrap">
 
-        <el-aside :class="[menuStatus.isCollapsed ? 'nav-collapsed' : 'nav-expanded']">
-          <NavigationBar />
-        </el-aside>
+      <el-aside :class="[menuStatus.isCollapsed ? 'nav-collapsed' : 'nav-expanded']">
+        <NavigationBar/>
+      </el-aside>
 
-        <el-container>
+      <el-container>
 
-          <el-header class="flex-row-ac header-container">
-            <MyHeaders />
-          </el-header>
+        <el-header class="flex-row-ac header-container">
+          <MyHeaders/>
+        </el-header>
 
-          <el-main>
-            <router-view></router-view>
-          </el-main>
+        <el-main style="background-color: var(--el-bg-color);">
+          <router-view></router-view>
+        </el-main>
 
-          <el-footer class="flex-row-ac">Footer</el-footer>
-
-        </el-container>
+        <el-footer class="flex-row-ac">Footer</el-footer>
 
       </el-container>
 
-    </div>
+    </el-container>
+
   </el-config-provider>
 
 </template>
 
 <style scoped lang="scss">
-.common-layout {
+.common-layout-wrap {
   width: 100vw;
   height: 100vh;
 
-  .container{
-    width: 100%;
-    height: 100%;
+  .header-container {
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--el-border-color);
+  }
 
-    .header-container{
-      box-sizing: border-box;
-      border-bottom: 1px solid var(--el-border-color);
-    }
+  .nav-expanded {
+    width: 200px;
+  }
 
-    .nav-expanded{
-      width: 200px;
-    }
-
-    .nav-collapsed{
-      width: calc( var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2 );
-    }
+  .nav-collapsed {
+    width: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2);
   }
 }
 </style>
