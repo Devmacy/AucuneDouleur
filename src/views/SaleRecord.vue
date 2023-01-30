@@ -1,28 +1,39 @@
 <template>
-  <el-table :data="tableData" style="width: 500px">
+  <el-table :data="recordState.tableData" style="width: 500px">
     <el-table-column prop="price" label="供货价"/>
     <el-table-column prop="name" label="名称"/>
     <el-table-column prop="amount" label="数量"/>
     <el-table-column prop="totalPrice" label="总价"/>
   </el-table>
-
-  <el-button @click="test">sort</el-button>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import {onMounted, reactive} from 'vue'
 import Sortable from 'sortablejs'
 
-function test () {
-  console.warn(Sortable)
-  const tbody = document.querySelector('.el-table__boyd-wrapper tbody')
-  console.warn(tbody)
-}
+const recordState = reactive({
+  tableData: [{ price: 6.2, name: '江小傲1', amount: 2, totalPrice: 12.4 }, {
+    price: 6.2,
+    name: '江小傲2',
+    amount: 2,
+    totalPrice: 12.4
+  }, { price: 6.2, name: '江小傲3', amount: 2, totalPrice: 12.4 }]
+})
 
-const tableData = ref([])
-tableData.value = [
-  { price: 6.2, name: '江小傲1', amount: 2, totalPrice: 12.4 },
-  { price: 6.2, name: '江小傲2', amount: 2, totalPrice: 12.4 },
-  { price: 6.2, name: '江小傲3', amount: 2, totalPrice: 12.4 }]
+const result = [...recordState.tableData]
+
+
+onMounted(()=>{
+  const tbody = document.querySelector('.el-table__body-wrapper table tbody') as HTMLElement
+  Sortable.create(tbody, {
+    animation: 180,
+    delay: 0,
+    onEnd: ({oldIndex,newIndex}) => {
+      // 同时协调更新数组
+      const currRow = result.splice(oldIndex as number, 1)[0]
+      result.splice(newIndex as number, 0, currRow)
+    }
+  })
+})
 </script>
 <!--<template>-->
 <!--  <el-upload-->
