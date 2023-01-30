@@ -1,4 +1,6 @@
-<template>123</template>
+<template>
+  哇偶宠物店单据录入
+</template>
 <script lang="ts" setup></script>
 <!--<template>-->
 <!--  <el-upload-->
