@@ -1,7 +1,29 @@
 <template>
-  哇偶宠物店单据录入
+  <el-table :data="tableData" style="width: 500px">
+    <el-table-column prop="price" label="供货价"/>
+    <el-table-column prop="name" label="名称"/>
+    <el-table-column prop="amount" label="数量"/>
+    <el-table-column prop="totalPrice" label="总价"/>
+  </el-table>
+
+  <el-button @click="test">sort</el-button>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from 'vue'
+import Sortable from 'sortablejs'
+
+function test () {
+  console.warn(Sortable)
+  const tbody = document.querySelector('.el-table__boyd-wrapper tbody')
+  console.warn(tbody)
+}
+
+const tableData = ref([])
+tableData.value = [
+  { price: 6.2, name: '江小傲1', amount: 2, totalPrice: 12.4 },
+  { price: 6.2, name: '江小傲2', amount: 2, totalPrice: 12.4 },
+  { price: 6.2, name: '江小傲3', amount: 2, totalPrice: 12.4 }]
+</script>
 <!--<template>-->
 <!--  <el-upload-->
 <!--      v-model:file-list="fileList"-->
