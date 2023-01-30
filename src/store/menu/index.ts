@@ -13,7 +13,7 @@ export const useMenuStore = defineStore('menuStore', {
           children: []
         },
         { routerPath: '/selectColor', menuName: '取色板', menuId: 'selectColor', icon: 'Edit', children: [] },
-        // { routerPath: '/code', menuName: '二维码', menuId: 'code', icon: 'Edit', children: [] },
+        { routerPath: '/saleRecord', menuName: '哇偶宠物店单据录入', menuId: 'code', icon: 'Edit', children: [] },
         // { routerPath: '/time', menuName: '时间处理', menuId: 'time', icon: 'Edit', children: [] },
         {
           routerPath: '/setting',

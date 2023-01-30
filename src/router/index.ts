@@ -32,6 +32,12 @@ const routes = [
     path: '/user',
     name: '个人信息',
     component: async () => await import('@/views/UserInfo.vue')
+  },
+
+  {
+    path: '/saleRecord',
+    name: '哇偶宠物店单据录入',
+    component: async () => await import('@/views/SaleRecord.vue')
   }
 ]
 export default createRouter({
