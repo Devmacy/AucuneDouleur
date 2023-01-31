@@ -52,8 +52,21 @@
 import {onMounted, reactive} from 'vue'
 import Sortable from 'sortablejs'
 
+interface goodsType {
+  goodsPrice: number
+  goodsName: string
+  goodsId: string
+}
+
+interface saleRecord {
+  goodsPrice: number
+  goodsName: string
+  goodsCount: number
+  goodsTotalPrice: number
+}
+
 const recordState = reactive({
-  tableData: [],
+  tableData: [] as saleRecord[],
 
   goodsPrice: 0,
   goodsCount: 1,
@@ -66,7 +79,7 @@ const recordState = reactive({
     {goodsPrice: 85.0, goodsName: '倍内菲 普通鹿肉三文鱼猫粮 1.8kg/袋', goodsId: '1238734781'},
     {goodsPrice: 420.0, goodsName: '法米娜 猫粮意大利进口N&D优选系列猪肉配方添加苹果-成猫用猫粮5kg/袋', goodsId: '452352452345'},
     {goodsPrice: 145.0, goodsName: '冠能 三文鱼配方成猫全价猫粮 2.5kg/袋', goodsId: '1234318535'}
-  ],
+  ] as goodsType[],
 })
 
 const result = [...recordState.tableData]
@@ -78,8 +91,8 @@ onMounted(() => {
     delay: 0,
     onEnd: ({oldIndex, newIndex}) => {
       // 同时协调更新数组
-      const currRow = result.splice(oldIndex, 1)[0]
-      result.splice(newIndex, 0, currRow)
+      const currRow = result.splice(oldIndex as number, 1)[0]
+      result.splice(newIndex as number, 0, currRow)
     }
   })
 })
@@ -99,7 +112,7 @@ const pushRecord = () => {
 
 const pushDeliveryPrice = () => {
   const obj = {
-    price: recordState.goodsDeliveryPrice,
+    goodsPrice: recordState.goodsDeliveryPrice,
     goodsName: 'P',
     goodsCount: 1,
     goodsTotalPrice: recordState.goodsDeliveryPrice
@@ -109,10 +122,18 @@ const pushDeliveryPrice = () => {
   recordState.goodsDeliveryPrice = 0
 }
 
-const setGoodsInfo = (value) => {
-  const item = recordState.goodsList.find((item) => {
+const setGoodsInfo = (value: string) => {
+  let item = recordState.goodsList.find((item) => {
     return item.goodsId === value
   })
+
+  if(item === undefined){
+    item = {
+      goodsPrice: 0,
+      goodsName: '',
+      goodsId: `${new Date().toString()}`
+    }
+  }
 
   recordState.goodsId = item.goodsId
   recordState.goodsName = item.goodsName
@@ -120,14 +141,14 @@ const setGoodsInfo = (value) => {
   recordState.goodsTotalPrice = item.goodsPrice * recordState.goodsCount
 }
 
-const setGoodsCountChange = (value) => {
+const setGoodsCountChange = (value: number) => {
   recordState.goodsCount = value
   recordState.goodsTotalPrice = value * recordState.goodsPrice
 }
 </script>
 
 <style lang="scss" scoped>
-.text{
+.text {
   width: 100px;
 }
 </style>
