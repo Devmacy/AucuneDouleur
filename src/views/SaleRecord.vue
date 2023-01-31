@@ -1,40 +1,136 @@
 <template>
-  <el-table :data="recordState.tableData" style="width: 500px">
-    <el-table-column prop="price" label="供货价"/>
-    <el-table-column prop="name" label="名称"/>
-    <el-table-column prop="amount" label="数量"/>
-    <el-table-column prop="totalPrice" label="总价"/>
+  <el-select v-model="recordState.goodsId" placeholder="选择商品" @change="setGoodsInfo" filterable>
+    <el-option
+        v-for="item in recordState.goodsList"
+        :key="item.goodsId"
+        :label="item.goodsName"
+        :value="item.goodsId"
+    />
+  </el-select>
+
+  <el-input-number v-model="recordState.goodsCount" :min="1" :step="1" step-strictly @change="setGoodsCountChange"/>
+  <el-button @click="pushRecord">存入数据</el-button>
+
+  <br>
+  配送费
+  <el-input-number v-model="recordState.goodsDeliveryPrice" :min="0"/>
+  <el-button @click="pushDeliveryPrice" :precision="2">存入配送费</el-button>
+
+
+  <div class="flex-col-jc" style="width: 500px">
+    <div class="flex-row-ac">
+      <span class="text">id</span>
+      <el-input v-model="recordState.goodsId"/>
+    </div>
+
+    <div class="flex-row-ac">
+      <span class="text">名称</span>
+      <el-input v-model="recordState.goodsName"/>
+    </div>
+
+    <div class="flex-row-ac">
+      <span class="text">单价</span>
+      <el-input v-model="recordState.goodsPrice"/>
+    </div>
+
+    <div class="flex-row-ac">
+      <span class="text">总价</span>
+      <el-input v-model="recordState.goodsTotalPrice"/>
+    </div>
+
+  </div>
+
+  <el-table :data="recordState.tableData" style="width: 500px" height="500px">
+    <el-table-column prop="goodsPrice" label="供货价"/>
+    <el-table-column prop="goodsName" label="名称"/>
+    <el-table-column prop="goodsCount" label="数量"/>
+    <el-table-column prop="goodsTotalPrice" label="总价"/>
   </el-table>
+
 </template>
 <script lang="ts" setup>
 import {onMounted, reactive} from 'vue'
 import Sortable from 'sortablejs'
 
 const recordState = reactive({
-  tableData: [{ price: 6.2, name: '江小傲1', amount: 2, totalPrice: 12.4 }, {
-    price: 6.2,
-    name: '江小傲2',
-    amount: 2,
-    totalPrice: 12.4
-  }, { price: 6.2, name: '江小傲3', amount: 2, totalPrice: 12.4 }]
+  tableData: [],
+
+  goodsPrice: 0,
+  goodsCount: 1,
+  goodsName: '',
+  goodsId: '',
+  goodsTotalPrice: 0,
+  goodsDeliveryPrice: 0,
+
+  goodsList: [
+    {goodsPrice: 85.0, goodsName: '倍内菲 普通鹿肉三文鱼猫粮 1.8kg/袋', goodsId: '1238734781'},
+    {goodsPrice: 420.0, goodsName: '法米娜 猫粮意大利进口N&D优选系列猪肉配方添加苹果-成猫用猫粮5kg/袋', goodsId: '452352452345'},
+    {goodsPrice: 145.0, goodsName: '冠能 三文鱼配方成猫全价猫粮 2.5kg/袋', goodsId: '1234318535'}
+  ],
 })
 
 const result = [...recordState.tableData]
 
-
-onMounted(()=>{
+onMounted(() => {
   const tbody = document.querySelector('.el-table__body-wrapper table tbody') as HTMLElement
   Sortable.create(tbody, {
     animation: 180,
     delay: 0,
-    onEnd: ({oldIndex,newIndex}) => {
+    onEnd: ({oldIndex, newIndex}) => {
       // 同时协调更新数组
-      const currRow = result.splice(oldIndex as number, 1)[0]
-      result.splice(newIndex as number, 0, currRow)
+      const currRow = result.splice(oldIndex, 1)[0]
+      result.splice(newIndex, 0, currRow)
     }
   })
 })
+
+const pushRecord = () => {
+  const obj = {
+    goodsPrice: recordState.goodsPrice,
+    goodsName: recordState.goodsName,
+    goodsCount: recordState.goodsCount,
+    goodsTotalPrice: recordState.goodsTotalPrice
+  }
+  recordState.tableData.push(obj)
+
+  // 重置数量
+  recordState.goodsCount = 1
+}
+
+const pushDeliveryPrice = () => {
+  const obj = {
+    price: recordState.goodsDeliveryPrice,
+    goodsName: 'P',
+    goodsCount: 1,
+    goodsTotalPrice: recordState.goodsDeliveryPrice
+  }
+  recordState.tableData.push(obj)
+  // 重置配送费
+  recordState.goodsDeliveryPrice = 0
+}
+
+const setGoodsInfo = (value) => {
+  const item = recordState.goodsList.find((item) => {
+    return item.goodsId === value
+  })
+
+  recordState.goodsId = item.goodsId
+  recordState.goodsName = item.goodsName
+  recordState.goodsPrice = item.goodsPrice
+  recordState.goodsTotalPrice = item.goodsPrice * recordState.goodsCount
+}
+
+const setGoodsCountChange = (value) => {
+  recordState.goodsCount = value
+  recordState.goodsTotalPrice = value * recordState.goodsPrice
+}
 </script>
+
+<style lang="scss" scoped>
+.text{
+  width: 100px;
+}
+</style>
 <!--<template>-->
 <!--  <el-upload-->
 <!--      v-model:file-list="fileList"-->
