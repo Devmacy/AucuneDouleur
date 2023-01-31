@@ -5,17 +5,22 @@ module.exports = {
         node: true
     },
     extends: [
-        'plugin:vue/vue3-essential',
-        'standard-with-typescript'
+        "eslint:recommended",
+        "plugin:vue/vue3-essential",
+        "plugin:@typescript-eslint/recommended"
     ],
-    overrides: [],
+    overrides: [
+    ],
+    parser: "vue-eslint-parser",
     parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        project: ['./tsconfig.json'],
+        ecmaVersion: "latest",
+        sourceType: "module",
+        parser: "@typescript-eslint/parser",
     },
     plugins: [
-        'vue'
+        "vue",
+        "@typescript-eslint"
     ],
-    rules: {}
+    rules: {
+    }
 }
