@@ -1,4 +1,17 @@
 <template>
+  <el-upload
+      v-model:file-list="fileState.fileList"
+      :limit="1"
+      :auto-upload="false"
+      :on-change="getUploadFile"
+  >
+    <el-button type="primary">上传商品单价excel表</el-button>
+  </el-upload>
+
+  <el-button type="primary" @click="exportSaleRecord">导出excel</el-button>
+
+  <br>
+
   <el-select v-model="recordState.goodsId" placeholder="选择商品" @change="setGoodsInfo" filterable>
     <el-option
         v-for="item in recordState.goodsList"
@@ -9,7 +22,7 @@
   </el-select>
 
   <el-input-number v-model="recordState.goodsCount" :min="1" :step="1" step-strictly @change="setGoodsCountChange"/>
-  <el-button @click="pushRecord">存入数据</el-button>
+  <el-button @click="pushRecord" :disabled="recordState.goodsList.length === 0">存入数据</el-button>
 
   <br>
   配送费
@@ -40,22 +53,34 @@
 
   </div>
 
-  <el-table :data="recordState.tableData" style="width: 500px" height="500px">
+  <el-table :data="recordState.tableData" style="width: 500px" height="500px" row-key="goodsId">
     <el-table-column prop="goodsPrice" label="供货价"/>
     <el-table-column prop="goodsName" label="名称"/>
     <el-table-column prop="goodsCount" label="数量"/>
     <el-table-column prop="goodsTotalPrice" label="总价"/>
+    <el-table-column fixed="right" label="操作" width="120">
+      <template #default="scope">
+        <el-button link type="danger" size="small" @click="deleteSaleRecord(scope.$index)">删除</el-button>
+      </template>
+    </el-table-column>
   </el-table>
 
 </template>
 <script lang="ts" setup>
 import {onMounted, reactive} from 'vue'
 import Sortable from 'sortablejs'
+import {UploadProps} from "element-plus";
+import * as xlsx from 'xlsx'
+import {WorkBook} from "xlsx";
 
 interface goodsType {
   goodsPrice: number
   goodsName: string
   goodsId: string
+  goodsBrand?: string
+  goodsKind?: string
+  goodsShelf?: number
+  goodsShelfNo?: number
 }
 
 interface saleRecord {
@@ -63,6 +88,7 @@ interface saleRecord {
   goodsName: string
   goodsCount: number
   goodsTotalPrice: number
+  goodsId: string
 }
 
 const recordState = reactive({
@@ -75,34 +101,36 @@ const recordState = reactive({
   goodsTotalPrice: 0,
   goodsDeliveryPrice: 0,
 
-  goodsList: [
-    {goodsPrice: 85.0, goodsName: '倍内菲 普通鹿肉三文鱼猫粮 1.8kg/袋', goodsId: '1238734781'},
-    {goodsPrice: 420.0, goodsName: '法米娜 猫粮意大利进口N&D优选系列猪肉配方添加苹果-成猫用猫粮5kg/袋', goodsId: '452352452345'},
-    {goodsPrice: 145.0, goodsName: '冠能 三文鱼配方成猫全价猫粮 2.5kg/袋', goodsId: '1234318535'}
-  ] as goodsType[],
+  goodsList: [] as goodsType[],
 })
 
-const result = [...recordState.tableData]
+const fileState = reactive({
+  fileList: []
+})
 
 onMounted(() => {
-  const tbody = document.querySelector('.el-table__body-wrapper table tbody') as HTMLElement
+  initSortableJs()
+})
+
+const initSortableJs = () => {
+  const tbody = document.querySelector('.el-table__body-wrapper tbody') as HTMLElement
   Sortable.create(tbody, {
     animation: 180,
     delay: 0,
     onEnd: ({oldIndex, newIndex}) => {
-      // 同时协调更新数组
-      const currRow = result.splice(oldIndex as number, 1)[0]
-      result.splice(newIndex as number, 0, currRow)
+      const currRow = recordState.tableData.splice(oldIndex as number, 1)[0]
+      recordState.tableData.splice(newIndex as number, 0, currRow)
     }
   })
-})
+}
 
 const pushRecord = () => {
   const obj = {
     goodsPrice: recordState.goodsPrice,
     goodsName: recordState.goodsName,
     goodsCount: recordState.goodsCount,
-    goodsTotalPrice: recordState.goodsTotalPrice
+    goodsTotalPrice: recordState.goodsTotalPrice.toFixed(1) as unknown as number,
+    goodsId: recordState.goodsId
   }
   recordState.tableData.push(obj)
 
@@ -115,19 +143,28 @@ const pushDeliveryPrice = () => {
     goodsPrice: recordState.goodsDeliveryPrice,
     goodsName: 'P',
     goodsCount: 1,
-    goodsTotalPrice: recordState.goodsDeliveryPrice
+    goodsTotalPrice: recordState.goodsDeliveryPrice.toFixed(1) as unknown as number,
+    goodsId: new Date().getTime().toString()
   }
   recordState.tableData.push(obj)
+
   // 重置配送费
   recordState.goodsDeliveryPrice = 0
 }
 
+const deleteSaleRecord = (index: number) => {
+  recordState.tableData.splice(index, 1)
+}
+
 const setGoodsInfo = (value: string) => {
+  // 重置数量
+  recordState.goodsCount = 1
+
   let item = recordState.goodsList.find((item) => {
     return item.goodsId === value
   })
 
-  if(item === undefined){
+  if (item === undefined) {
     item = {
       goodsPrice: 0,
       goodsName: '',
@@ -145,6 +182,60 @@ const setGoodsCountChange = (value: number) => {
   recordState.goodsCount = value
   recordState.goodsTotalPrice = value * recordState.goodsPrice
 }
+
+const readFile = (file: Blob) => {
+  return new Promise(resolve => {
+    let reader = new FileReader()
+    reader.readAsBinaryString(file)
+    reader.onload = (ev) => {
+      if (!ev.target) {
+        return resolve({})
+      }
+      resolve(ev.target.result)
+    }
+  })
+}
+
+const getUploadFile: UploadProps['onChange'] = async (event) => {
+  const file = event.raw
+  if (!file) {
+    return
+  }
+  let dataBinary = await readFile(file)
+  let workBook = xlsx.read(dataBinary, {type: 'binary', cellDates: true})
+  let workSheet = workBook.Sheets[workBook.SheetNames[0]]
+  let data = xlsx.utils.sheet_to_json(workSheet)
+  data = data.map((item: any): goodsType => {
+    return {
+      goodsPrice: item['供货价'],
+      goodsName: item['名称'],
+      goodsId: item['id'],
+      goodsBrand: item['品牌'],
+      goodsKind: item['种类'],
+      goodsShelf: item['货架层'],
+      goodsShelfNo: item['货架编号'],
+    }
+  })
+
+  recordState.goodsList = data as Array<goodsType>
+}
+
+const exportSaleRecord = () => {
+  const sheetData = recordState.tableData.map((item)=>{
+    return {
+      goodsNameWithCount:`${item.goodsName}${item.goodsName === 'P' ? '' : `* ${item.goodsCount}`}`,
+      goodsTotalPrice:`${item.goodsTotalPrice}`
+    }
+  })
+  const jsonWorkSheet = xlsx.utils.json_to_sheet(sheetData);
+  const workBook: WorkBook = {
+    SheetNames: ['销售表'],
+    Sheets: {
+      ['销售表']: jsonWorkSheet,
+    }
+  };
+  return xlsx.writeFile(workBook, `${new Date().getMonth() + 1}月销售表.xlsx`);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -152,90 +243,3 @@ const setGoodsCountChange = (value: number) => {
   width: 100px;
 }
 </style>
-<!--<template>-->
-<!--  <el-upload-->
-<!--      v-model:file-list="fileList"-->
-<!--      :limit="1"-->
-<!--      :auto-upload="false"-->
-<!--      :on-change="getUploadFile"-->
-<!--  >-->
-<!--    <el-button type="primary">Click to upload</el-button>-->
-<!--  </el-upload>-->
-
-<!--  <el-select v-model="item" filterable clearable @change="setPrice">-->
-<!--    <el-option-->
-<!--        v-for="item in itemList"-->
-<!--        :key="item.index"-->
-<!--        :label="item.label"-->
-<!--        :value="item.index"-->
-<!--    />-->
-<!--  </el-select>-->
-<!--  <el-input-number v-model="num" :min="1" :max="10" @change="handleNumChange" />-->
-<!--  单价：{{singlePrice}}-->
-<!--  总价：{{sumPrice}}-->
-<!--</template>-->
-
-<!--<script lang="ts" setup>-->
-<!--import {ref} from "vue";-->
-<!--import type {UploadProps, UploadUserFile} from 'element-plus'-->
-<!--import * as xlsx from 'xlsx'-->
-
-<!--const fileList = ref<UploadUserFile[]>([])-->
-<!--const itemList = ref([])-->
-<!--const singlePrice = ref(0)-->
-<!--const sumPrice = ref(0)-->
-<!--const num = ref(1)-->
-
-<!--const readFile = (file: any) => {-->
-<!--  return new Promise(resolve => {-->
-<!--    let reader = new FileReader()-->
-<!--    reader.readAsBinaryString(file)-->
-<!--    reader.onload = (ev: any) => {-->
-<!--      resolve(ev.target.result)-->
-<!--    }-->
-<!--  })-->
-<!--}-->
-
-<!--function getListAddValue(list: Array<any>, obj: object, otherKey: string, needKeyValue: string) {-->
-<!--  if (list.length === 0) {-->
-<!--    return []-->
-<!--  }-->
-
-<!--  const result = []-->
-<!--  for (let i = 0; i < list.length; i++) {-->
-<!--    result.push({-->
-<!--      index:i,-->
-<!--      ...list[i],-->
-<!--      ...obj,-->
-<!--      [otherKey]: list[i][needKeyValue]-->
-<!--    })-->
-<!--  }-->
-<!--  return result-->
-<!--}-->
-
-<!--const item = ref('')-->
-<!--/**-->
-<!-- * 上传change回调-->
-<!-- * @param event-->
-<!-- */-->
-<!--const getUploadFile: UploadProps['onChange'] = async (event) => {-->
-<!--  const file = event.raw-->
-
-<!--  let dataBinary = await readFile(file)-->
-<!--  let workBook = xlsx.read(dataBinary, {type: 'binary', cellDates: true})-->
-<!--  let workSheet = workBook.Sheets[workBook.SheetNames[0]]-->
-<!--  let data = xlsx.utils.sheet_to_json(workSheet)-->
-<!--  data = getListAddValue(data,{},'price','供货价')-->
-<!--  data = getListAddValue(data,{},'label','名称')-->
-<!--  itemList.value.push(...data)-->
-<!--}-->
-
-<!--const setPrice = (index)=>{-->
-<!--  singlePrice.value = itemList.value[index]['price']-->
-<!--  sumPrice.value = itemList.value[index]['price'] * num.value-->
-<!--}-->
-<!--</script>-->
-
-<!--<style scoped lang="scss">-->
-
-<!--</style>-->
