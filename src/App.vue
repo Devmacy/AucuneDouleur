@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import NavigationBar from '@/components/NavigationBar.vue'
 import MyHeaders from '@/components/MyHeaders.vue'
-import { useMenuStore, useLocalStore } from '@/store' // 菜单状态
+import { useMenuStore, useLocalStore } from '@/store'
+import SimpleHitokoto from "@/components/hitokoto/SimpleHitokoto.vue"; // 菜单状态
 
 const menuStatus = useMenuStore()
 const localStore = useLocalStore()
@@ -27,7 +28,7 @@ const localStore = useLocalStore()
           <router-view></router-view>
         </el-main>
 
-        <el-footer class="flex-row-ac">Footer</el-footer>
+        <el-footer class="flex-row-c-c"><simple-hitokoto/></el-footer>
 
       </el-container>
 
