@@ -3,21 +3,38 @@ import {reactive} from "vue";
 import {getHitkoto} from "@/api/hitokoto";
 
 const sentenceState = reactive({
-  sentence:'加载中...',
+  sentence: '加载中...',
+
+  isLoading: false,
+
+  delayTime:300
 })
 
 const getHitkotoSentence = async () => {
-  let res = await getHitkoto({})
-  sentenceState.sentence = res.hitokoto
+  if(sentenceState.isLoading){
+    return
+  }
+
+  sentenceState.isLoading = true
+  sentenceState.sentence = '加载中...'
+
+  getHitkoto({}).then((res) => {
+    sentenceState.isLoading = false
+    sentenceState.sentence = res.hitokoto
+  })
 }
+
+getHitkotoSentence()
 </script>
 
 <template>
-  <div @click="getHitkotoSentence">
-    {{sentenceState.sentence}}
+  <div :style="{cursor: (sentenceState.isLoading ? 'not-allowed' : 'pointer')}" @click="getHitkotoSentence" class="text">
+    {{ sentenceState.sentence }}
   </div>
 </template>
 
 <style lang="scss" scoped>
-
+.text{
+  color: var(--el-text-color-secondary);
+}
 </style>
