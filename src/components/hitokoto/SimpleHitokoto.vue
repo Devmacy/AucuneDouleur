@@ -6,8 +6,6 @@ const sentenceState = reactive({
   sentence: '加载中...',
 
   isLoading: false,
-
-  delayTime:300
 })
 
 const getHitkotoSentence = async () => {
@@ -20,7 +18,7 @@ const getHitkotoSentence = async () => {
 
   getHitkoto({}).then((res) => {
     sentenceState.isLoading = false
-    sentenceState.sentence = res.hitokoto
+    sentenceState.sentence = res.data.hitokoto
   })
 }
 
