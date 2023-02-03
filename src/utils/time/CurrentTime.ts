@@ -24,7 +24,7 @@ export class CurrentTime {
     return this.weekDayMap.get(this.date.getDay())
   }
 
-  formatterTime (format: string = 'yyyy-MM-dd hh:mm:ss'): string {
+  formatterTime (format = 'yyyy-MM-dd hh:mm:ss'): string {
     interface timeType {
       yyyy: string
       MM: string
