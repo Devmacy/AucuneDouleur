@@ -16,7 +16,10 @@
           <el-button type="primary" :disabled="fileState.fileList.length > 0">上传商品单价excel表</el-button>
         </el-upload>
 
-        <el-button type="primary" @click="exportSaleRecord">导出</el-button>
+        <div>
+          <el-button type="primary" @click="exportSaleRecord">导出</el-button>
+          <el-button @click="flagState.isShowSetting = true">设置</el-button>
+        </div>
       </div>
 
       <el-divider/>
@@ -24,83 +27,92 @@
       <div class="info-container flex-row">
         <el-card class="box-card" shadow="hover">
           <template #header>
-            <div class="box-header">
-              <el-select class="select" v-model="recordState.goodsId" placeholder="选择商品" @change="setGoodsInfo"
-                         filterable>
-                <el-option
-                    v-for="item in recordState.goodsList"
-                    :key="item.goodsId"
-                    :label="item.goodsName"
-                    :value="item.goodsId"
-                />
-              </el-select>
+            <div class="box-card-header">
+              <div class="left flex-row-ac">
+                <div>总：</div>
+                <el-slider v-model="recordState.saleRecordTotalPrice" :min="0" :step="0.1"
+                           :max="settingState.saleRecordMaxPrice"
+                           show-input/>
 
+
+              </div>
+              <div class="right flex-row-ac">
+                <span>配：</span>
+                <el-slider class="right-slider" v-model="recordState.goodsDeliveryPrice" :min="0" :step="0.1"
+                           :max="settingState.goodsDeliveryMaxPrice" show-input/>
+                <el-button style="margin-left: 5px" :icon="ArrowRightBold" circle @click="pushDeliveryPrice"/>
+              </div>
+            </div>
+          </template>
+
+          <el-descriptions
+              :column="1"
+              border
+              class="box-card-body"
+          >
+
+            <el-descriptions-item label="ID"><span style="color: var(--el-color-info)">{{ recordState.goodsId }}</span>
+            </el-descriptions-item>
+
+            <el-descriptions-item>
+              <template #label>
+                <div>
+                  <el-icon>
+                    <Bowl/>
+                  </el-icon>
+                  商品
+                </div>
+              </template>
+              <div class="flex-row-ac">
+                <el-select class="select" v-model="recordState.goodsId" placeholder="选择商品" @change="setGoodsInfo"
+                           filterable>
+                  <el-option
+                      v-for="item in recordState.goodsList"
+                      :key="item.goodsId"
+                      :label="item.goodsName"
+                      :value="item.goodsId"
+                  />
+                </el-select>
+                <el-button style="margin-left: 5px" :disabled="recordState.goodsList.length === 0" type="success"
+                           :icon="ArrowRightBold" circle
+                           @click="pushRecord"/>
+              </div>
+            </el-descriptions-item>
+
+            <el-descriptions-item>
+              <template #label>
+                <div>
+                  <el-icon>
+                    <Coin/>
+                  </el-icon>
+                  单价
+                </div>
+              </template>
+              <span style="color: var(--el-color-success)">{{ recordState.goodsPrice.toFixed(1) }}元</span>
+            </el-descriptions-item>
+
+            <el-descriptions-item label="数量">
               <el-input-number class="input-number" v-model="recordState.goodsCount" controls-position="right" :min="1"
                                :step="1"
                                step-strictly
                                @change="setGoodsCountChange"/>
+            </el-descriptions-item>
 
-              <el-button :disabled="recordState.goodsList.length === 0" type="success" :icon="ArrowRightBold" circle
-                         @click="pushRecord"/>
-            </div>
-          </template>
+            <el-descriptions-item>
+              <template #label>
+                <div>
+                  <el-icon>
+                    <ShoppingCart/>
+                  </el-icon>
+                  总价
+                </div>
+              </template>
+              <span style="color: var(--el-color-danger)">{{ recordState.goodsTotalPrice.toFixed(1) }}元</span>
+            </el-descriptions-item>
 
-          <div class="card-body">
-            <div class="flex-row-ac">
-              <span class="key-text">商品:</span>
-              <span class="content-text">{{ recordState.goodsName }}</span>
-            </div>
-
-            <div class="flex-row-ac">
-              <span class="key-text">单价:</span>
-              <span class="content-text">{{ recordState.goodsPrice.toFixed(1) }}￥</span>
-            </div>
-
-            <div class="flex-row-ac">
-              <span class="key-text">数量:</span>
-              <span class="content-text">{{ recordState.goodsCount }}</span>
-            </div>
-
-            <div class="flex-row-ac">
-              <span class="key-text">总价:</span>
-              <span class="content-text">{{ recordState.goodsTotalPrice.toFixed(1) }}￥</span>
-            </div>
-
-            <div class="flex-row-ac">
-              <span class="key-text">订单总价:</span>
-              <div>
-                <el-input-number class="content-text" v-model="recordState.saleRecordTotalPrice"
-                                 controls-position="right"
-                                 :min="0"
-                                 :step="1"
-                                 :precision="1"/>
-                <el-switch
-                    v-model="recordState.isIncludeSaleRecordTotalPrice"
-                    inline-prompt
-                    active-text="是"
-                    inactive-text="否"
-                />
-              </div>
-            </div>
-          </div>
+          </el-descriptions>
         </el-card>
 
-        <el-card class="box-secondary-card" shadow="hover">
-          <template #header>
-            <div class="box-header">
-              <div>配送费</div>
-              <el-button type="warning" :icon="ArrowRightBold" circle
-                         @click="pushDeliveryPrice"/>
-            </div>
-          </template>
-          <div>
-            <span>价格:</span>
-            <el-input-number class="content-text" v-model="recordState.goodsDeliveryPrice" controls-position="right"
-                             :min="0"
-                             :step="1"
-                             :precision="1"/>
-          </div>
-        </el-card>
       </div>
 
       <el-divider/>
@@ -128,6 +140,26 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <el-drawer
+        v-model="flagState.isShowSetting"
+        title="设置"
+        direction="rtl"
+    >
+      <el-descriptions
+          :column="1"
+          border
+      >
+        <el-descriptions-item label="订单最大额度/元">
+          <el-input-number v-model="settingState.saleRecordMaxPrice"/>
+        </el-descriptions-item>
+
+        <el-descriptions-item label="配送费最大额度/元">
+          <el-input-number v-model="settingState.goodsDeliveryMaxPrice"/>
+        </el-descriptions-item>
+      </el-descriptions>
+
+    </el-drawer>
   </div>
 
 </template>
@@ -138,7 +170,7 @@ import {UploadProps} from "element-plus";
 import * as xlsx from 'xlsx'
 import {WorkBook} from "xlsx";
 import {CurrentTime} from "@/utils/time/CurrentTime";
-import {ArrowRightBold} from '@element-plus/icons-vue'
+import {ArrowRightBold, ShoppingCart, Bowl, Coin} from '@element-plus/icons-vue'
 
 interface goodsType {
   goodsPrice: number
@@ -170,9 +202,16 @@ const recordState = reactive({
   goodsDeliveryPrice: 0,
   saleRecordTotalPrice: 0,
 
-  isIncludeSaleRecordTotalPrice: false,
-
   goodsList: [] as goodsType[],
+})
+
+const flagState = reactive({
+  isShowSetting: false
+})
+
+const settingState = reactive({
+  saleRecordMaxPrice: 200,
+  goodsDeliveryMaxPrice: 50,
 })
 
 const fileState = reactive({
@@ -203,14 +242,16 @@ const pushRecord = () => {
     goodsCount: recordState.goodsCount,
     goodsTotalPrice: recordState.goodsTotalPrice.toFixed(1) as unknown as number,
     goodsId: recordState.goodsId,
-    saleRecordTotalPrice: recordState.isIncludeSaleRecordTotalPrice ? recordState.saleRecordTotalPrice : ''
+    saleRecordTotalPrice:
+        recordState.saleRecordTotalPrice !== 0
+            ? recordState.saleRecordTotalPrice.toFixed(1)
+            : ''
   }
   recordState.tableData.unshift(obj)
 
   // 重置数量
   recordState.goodsCount = 1
   recordState.saleRecordTotalPrice = 0
-  recordState.isIncludeSaleRecordTotalPrice = false
 }
 
 const pushDeliveryPrice = () => {
@@ -220,14 +261,16 @@ const pushDeliveryPrice = () => {
     goodsCount: 1,
     goodsTotalPrice: recordState.goodsDeliveryPrice.toFixed(1) as unknown as number,
     goodsId: new Date().getTime().toString(),
-    saleRecordTotalPrice: recordState.isIncludeSaleRecordTotalPrice ? recordState.saleRecordTotalPrice : ''
+    saleRecordTotalPrice:
+        recordState.saleRecordTotalPrice !== 0
+            ? recordState.saleRecordTotalPrice.toFixed(1)
+            : ''
   }
   recordState.tableData.unshift(obj)
 
   // 重置配送费
   recordState.goodsDeliveryPrice = 0
   recordState.saleRecordTotalPrice = 0
-  recordState.isIncludeSaleRecordTotalPrice = false
 }
 
 const deleteSaleRecord = (index: number) => {
@@ -348,38 +391,42 @@ const exportSaleRecord = () => {
     }
 
     .info-container {
-      font-size: var(--el-font-size-extra-large);
       justify-content: space-between;
 
       .box-card {
-        width: 76%;
+        width: 100%;
+        margin: 0 10px 0 0;
 
-        .box-header {
+        .box-card-header {
           display: flex;
-          align-items: center;
+          flex-direction: column;
+
+          .left {
+          }
+
+          .right {
+            margin-top: 5px;
+          }
+
+          .max-input {
+          }
+
+          .push-button {
+            margin-left: 5px;
+          }
+
+          .right-slider {
+          }
+        }
+
+        .box-card-body {
 
           .select {
-            flex: 1;
+            width: 100%;
           }
 
           .input-number {
-          }
-
-
-        }
-
-        .card-body {
-          display: grid;
-
-          .key-text {
-            padding: 5px 0;
-            width: 10%;
-            color: var(--el-text-color-primary);
-          }
-
-          .content-text {
-            flex: 1;
-            color: var(--el-text-color-secondary);
+            width: 100%;
           }
         }
       }
