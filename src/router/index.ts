@@ -37,7 +37,7 @@ const routes = [
   {
     path: '/saleRecord',
     name: '哇偶宠物店单据录入',
-    component: async () => await import('@/views/SaleRecord.vue')
+    component: async () => await import('@/views/SaleRecordCopy.vue')
   }
 ]
 export default createRouter({
