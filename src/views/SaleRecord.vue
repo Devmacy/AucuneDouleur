@@ -28,19 +28,17 @@
         <el-card class="box-card" shadow="hover">
           <template #header>
             <div class="box-card-header">
-              <div class="left flex-row-ac">
-                <div>总：</div>
-                <el-slider v-model="recordState.saleRecordTotalPrice" :min="0" :step="0.1"
-                           :max="settingState.saleRecordMaxPrice"
-                           show-input/>
-
-
+              <div class="flex-row-ac">
+                <div>订单<span>{{ `￥${recordState.saleRecordTotalPrice}` }}</span></div>
+                <scroll-number ref="orderScrollNumber" :integer="[0,0,0]" :decimal="[0,0]" @get-number="getOrderSumNumber"/>
               </div>
-              <div class="right flex-row-ac">
-                <span>配：</span>
-                <el-slider class="right-slider" v-model="recordState.goodsDeliveryPrice" :min="0" :step="0.1"
-                           :max="settingState.goodsDeliveryMaxPrice" show-input/>
-                <el-button style="margin-left: 5px" :icon="ArrowRightBold" circle @click="pushDeliveryPrice"/>
+              <el-divider direction="vertical" border-style="dashed" style="height: inherit"/>
+              <div class="flex-row-ac">
+                <div>配送<span>{{ `￥${recordState.goodsDeliveryPrice}` }}</span></div>
+                <scroll-number :integer="[0,0,0]" :decimal="[0,0]" @get-number="getNumber"/>
+                <el-button style="margin-left: 5px" type="warning"
+                           :icon="ArrowRightBold" circle
+                           @click="pushDeliveryPrice"/>
               </div>
             </div>
           </template>
@@ -56,12 +54,10 @@
 
             <el-descriptions-item>
               <template #label>
-                <div>
-                  <el-icon>
-                    <Bowl/>
-                  </el-icon>
+                <span>
+
                   商品
-                </div>
+                </span>
               </template>
               <div class="flex-row-ac">
                 <el-select class="select" v-model="recordState.goodsId" placeholder="选择商品" @change="setGoodsInfo"
@@ -73,6 +69,26 @@
                       :value="item.goodsId"
                   />
                 </el-select>
+              </div>
+            </el-descriptions-item>
+
+            <el-descriptions-item>
+              <template #label>
+                <span>
+
+                  单价
+                </span>
+              </template>
+              <span style="color: var(--el-color-success)">{{ recordState.goodsPrice.toFixed(1) }}元</span>
+            </el-descriptions-item>
+
+            <el-descriptions-item label="数量">
+              <div class="flex-row-ac">
+                <el-input-number class="input-number" v-model="recordState.goodsCount" controls-position="right"
+                                 :min="1"
+                                 :step="1"
+                                 step-strictly
+                                 @change="setGoodsCountChange"/>
                 <el-button style="margin-left: 5px" :disabled="recordState.goodsList.length === 0" type="success"
                            :icon="ArrowRightBold" circle
                            @click="pushRecord"/>
@@ -81,31 +97,9 @@
 
             <el-descriptions-item>
               <template #label>
-                <div>
-                  <el-icon>
-                    <Coin/>
-                  </el-icon>
-                  单价
-                </div>
-              </template>
-              <span style="color: var(--el-color-success)">{{ recordState.goodsPrice.toFixed(1) }}元</span>
-            </el-descriptions-item>
-
-            <el-descriptions-item label="数量">
-              <el-input-number class="input-number" v-model="recordState.goodsCount" controls-position="right" :min="1"
-                               :step="1"
-                               step-strictly
-                               @change="setGoodsCountChange"/>
-            </el-descriptions-item>
-
-            <el-descriptions-item>
-              <template #label>
-                <div>
-                  <el-icon>
-                    <ShoppingCart/>
-                  </el-icon>
+                <span>
                   总价
-                </div>
+                </span>
               </template>
               <span style="color: var(--el-color-danger)">{{ recordState.goodsTotalPrice.toFixed(1) }}元</span>
             </el-descriptions-item>
@@ -121,13 +115,6 @@
     <div class="right-output">
       <el-table :data="recordState.tableData" class="table" height="calc(100%)" row-key="goodsId"
                 :row-class-name="tableRowClassName" show-summary border>
-        <el-table-column width="80" align="center">
-          <template #default>
-            <el-icon style="cursor: pointer" class="move-handle">
-              <Location/>
-            </el-icon>
-          </template>
-        </el-table-column>
         <el-table-column align="center" prop="goodsName" label="名称" min-width="180"/>
         <el-table-column align="center" prop="goodsPrice" label="供货价" width="70"/>
         <el-table-column align="center" prop="goodsCount" label="数量" width="60"/>
@@ -135,7 +122,7 @@
         <el-table-column align="center" prop="saleRecordTotalPrice" label="本单总价" width="100"/>
         <el-table-column align="center" fixed="right" label="操作" width="80">
           <template #default="scope">
-            <el-button type="danger" size="small" @click="deleteSaleRecord(scope.$index)">删除</el-button>
+            <el-button type="danger" size="small" :icon="Delete" @click="deleteSaleRecord(scope.$index)" circle/>
           </template>
         </el-table-column>
       </el-table>
@@ -150,13 +137,6 @@
           :column="1"
           border
       >
-        <el-descriptions-item label="订单最大额度/元">
-          <el-input-number v-model="settingState.saleRecordMaxPrice"/>
-        </el-descriptions-item>
-
-        <el-descriptions-item label="配送费最大额度/元">
-          <el-input-number v-model="settingState.goodsDeliveryMaxPrice"/>
-        </el-descriptions-item>
       </el-descriptions>
 
     </el-drawer>
@@ -164,13 +144,13 @@
 
 </template>
 <script lang="ts" setup>
-import {onMounted, reactive} from 'vue'
-import Sortable from 'sortablejs'
+import {reactive, ref} from 'vue'
 import {UploadProps} from "element-plus";
 import * as xlsx from 'xlsx'
 import {WorkBook} from "xlsx";
 import {CurrentTime} from "@/utils/time/CurrentTime";
-import {ArrowRightBold, ShoppingCart, Bowl, Coin} from '@element-plus/icons-vue'
+import {ArrowRightBold, Delete} from '@element-plus/icons-vue'
+import ScrollNumber from "@/components/number/ScrollNumber.vue";
 
 interface goodsType {
   goodsPrice: number
@@ -209,35 +189,15 @@ const flagState = reactive({
   isShowSetting: false
 })
 
-const settingState = reactive({
-  saleRecordMaxPrice: 200,
-  goodsDeliveryMaxPrice: 50,
-})
-
 const fileState = reactive({
   fileList: []
 })
 
-onMounted(() => {
-  initSortableJs()
-})
-
-const initSortableJs = () => {
-  const tbody = document.querySelector('.el-table__body-wrapper tbody') as HTMLElement
-  Sortable.create(tbody, {
-    animation: 180,
-    handle: '.move-handle',
-    delay: 0,
-    onEnd: ({oldIndex, newIndex}) => {
-      const currRow = recordState.tableData.splice(oldIndex as number, 1)[0]
-      recordState.tableData.splice(newIndex as number, 0, currRow)
-    }
-  })
-}
+const orderScrollNumber =ref()
 
 const pushRecord = () => {
   const obj = {
-    goodsPrice: recordState.goodsPrice,
+    goodsPrice: recordState.goodsPrice.toFixed(1) as unknown as number,
     goodsName: recordState.goodsName,
     goodsCount: recordState.goodsCount,
     goodsTotalPrice: recordState.goodsTotalPrice.toFixed(1) as unknown as number,
@@ -252,11 +212,12 @@ const pushRecord = () => {
   // 重置数量
   recordState.goodsCount = 1
   recordState.saleRecordTotalPrice = 0
+  orderScrollNumber.value.init()
 }
 
 const pushDeliveryPrice = () => {
   const obj = {
-    goodsPrice: recordState.goodsDeliveryPrice,
+    goodsPrice: recordState.goodsDeliveryPrice.toFixed(1) as unknown as number,
     goodsName: 'P',
     goodsCount: 1,
     goodsTotalPrice: recordState.goodsDeliveryPrice.toFixed(1) as unknown as number,
@@ -267,10 +228,6 @@ const pushDeliveryPrice = () => {
             : ''
   }
   recordState.tableData.unshift(obj)
-
-  // 重置配送费
-  recordState.goodsDeliveryPrice = 0
-  recordState.saleRecordTotalPrice = 0
 }
 
 const deleteSaleRecord = (index: number) => {
@@ -366,6 +323,16 @@ const exportSaleRecord = () => {
   const date = new CurrentTime(new Date())
   return xlsx.writeFile(workBook, `${date.formatterTime('yyyy年MM月dd日')}${date.getWeekDay()}销售表.xlsx`);
 }
+
+const getNumber = (event: { data: number }) => {
+  const {data} = event
+  recordState.goodsDeliveryPrice = data
+}
+
+const getOrderSumNumber = (event: { data: number }) => {
+  const {data} = event
+  recordState.saleRecordTotalPrice = data
+}
 </script>
 
 <style lang="scss" scoped>
@@ -399,7 +366,8 @@ const exportSaleRecord = () => {
 
         .box-card-header {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          justify-content: space-evenly;
 
           .left {
           }
@@ -408,14 +376,8 @@ const exportSaleRecord = () => {
             margin-top: 5px;
           }
 
-          .max-input {
-          }
-
           .push-button {
             margin-left: 5px;
-          }
-
-          .right-slider {
           }
         }
 
