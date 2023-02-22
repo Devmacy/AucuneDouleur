@@ -2,6 +2,7 @@
  * 生成(min,max)的随机整数
  * @param min 最小值
  * @param max 最大值
+ * @return {number} 整数
  */
 export function getRandomNumber(min: number, max: number): number {
     return Math.ceil(Math.random() * (max - min - 1) + min)
@@ -11,6 +12,7 @@ export function getRandomNumber(min: number, max: number): number {
  * 生成【min,max)的随机整数
  * @param min 最小值
  * @param max 最大值
+ * @return {number} 整数
  */
 export function getRandomNumberL(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min) + min)
@@ -20,6 +22,7 @@ export function getRandomNumberL(min: number, max: number): number {
  * 生成(min,max]的随机整数
  * @param min 最小值
  * @param max 最大值
+ * @return {number} 整数
  */
 export function getRandomNumberR(min: number, max: number): number {
     return Math.ceil(Math.random() * (max - min) + min)
@@ -29,6 +32,7 @@ export function getRandomNumberR(min: number, max: number): number {
  * 生成【min,max]的随机整数
  * @param min 最小值
  * @param max 最大值
+ * @return {number} 整数
  */
 export function getRandomNumberLR(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min)
