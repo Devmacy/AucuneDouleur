@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getActualWeather} from "@/api/weather";
+import {getActualWeather, getRecentWeather} from "@/api/weather";
 import {reactive} from "vue";
 
 const weatherState = reactive({
@@ -8,6 +8,13 @@ const weatherState = reactive({
       text: '',
       temperature: ''
     },
+    location: {
+      name: ''
+    }
+  },
+
+  recentData: {
+    daily: [],
     location: {
       name: ''
     }
@@ -27,7 +34,17 @@ const getData = () => {
   })
 }
 
+/**
+ * 获取天气数据
+ */
+const getRecentData = () => {
+  getRecentWeather('ip', weatherState.privateKey).then((res) => {
+    weatherState.recentData = res.data?.results[0]
+  })
+}
+
 getData()
+getRecentData()
 
 /**
  * 刷新数据
@@ -39,6 +56,7 @@ const refresh = () => {
     weatherState.refreshDisable = false
   }, 3000)
 }
+
 
 /**
  * 保存密钥到本地
@@ -72,6 +90,12 @@ const clearLocalPrivateKey = () => {
       <span>温度：{{ weatherState.data.now.temperature }}℃</span>
       <span>天气：{{ weatherState.data.now.text }}</span>
     </div>
+
+    <div class="recent-container">
+      <div class="recent-item" v-for="(item,index) in weatherState.recentData.daily" :key="index">
+        {{ item.text_day || '' }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -79,5 +103,19 @@ const clearLocalPrivateKey = () => {
 .main-container {
   width: 100%;
   height: 100%;
+
+  .recent-container {
+    display: flex;
+    justify-content: space-around;
+
+    .recent-item {
+      height: 100px;
+      width: 200px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      border: var(--el-border-color) solid 1px;
+      margin: 0 5px;
+    }
+  }
 }
 </style>
