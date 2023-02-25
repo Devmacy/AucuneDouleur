@@ -5,24 +5,43 @@ import {getRandomNumberLR} from "@/utils/number/randomNumbe";
 
 const colorState = reactive({
   selectedColor: '',
-  colorList: [] as Array<string>
+  colorList: [] as Array<Array<string>>,
+  listCount: 10,
 })
 
+
 /**
- * 生成随机颜色
+ * 生成暖色或冷色或随机色
+ * @param type 颜色类型
+ * @param count 颜色数量
  */
-const generateRandomColorList = (): void => {
-  for (let i = 0; i < 10; i++) {
-    colorState.colorList.push(`rgba(${getRandomNumberLR(0, 255)},${getRandomNumberLR(0, 255)},${getRandomNumberLR(0, 255)},1)`)
+const generateColorList = (type: string, count?: number): void => {
+  for (let i = 0; i < (count ? count : 10); i++) {
+    let r = `${getRandomNumberLR(0, 255)}`
+    let b = `${getRandomNumberLR(0, 255)}`
+
+    if (type === 'warm') {
+      if (parseInt(r) < parseInt(b)) {
+        [r, b] = [b, r]
+      }
+    }
+
+    if (type === 'cold') {
+      if (parseInt(r) > parseInt(b)) {
+        [r, b] = [b, r]
+      }
+    }
+
+    colorState.colorList.push([r, `${getRandomNumberLR(0, 255)}`, b, `1`])
   }
 }
 
 /**
  * 解析当前颜色并且设置当前颜色
- * @param rgbColor
+ * @param rgbColorList
  */
-const setCurrentColor = (rgbColor: string): void => {
-  colorState.selectedColor = rgbColor
+const setCurrentColor = (rgbColorList: Array<string>): void => {
+  colorState.selectedColor = `rgba(${rgbColorList[0]},${rgbColorList[1]},${rgbColorList[2]},${rgbColorList[3]})`
 }
 
 </script>
@@ -56,16 +75,18 @@ const setCurrentColor = (rgbColor: string): void => {
     <el-card class="box-card">
       <template #header>
         <div>
-          <el-button @click="generateRandomColorList">随机颜色</el-button>
-          <el-button @click="generateRandomColorList">暖色</el-button>
-          <el-button @click="generateRandomColorList">冷色</el-button>
+          <el-button @click="generateColorList('',colorState.listCount)">随机颜色</el-button>
+          <el-button @click="generateColorList('warm',colorState.listCount)">暖色</el-button>
+          <el-button @click="generateColorList('cold',colorState.listCount)">冷色</el-button>
           <el-button @click="colorState.colorList = []">clear</el-button>
+          <el-input-number v-model="colorState.listCount" :min="1" controls-position="right" :step="1" step-strictly/>
         </div>
       </template>
 
       <div class="flex-row random-color-container" style="flex-wrap: wrap">
         <div class="item" v-for="(item,index) in colorState.colorList" :key="index"
-             :style="{backgroundColor:item}" @click="setCurrentColor(item)"></div>
+             :style="{backgroundColor:`rgba(${item[0]},${item[1]},${item[2]},${item[3]})`}"
+             @click="setCurrentColor(item)"></div>
       </div>
     </el-card>
 
