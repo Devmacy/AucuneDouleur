@@ -28,16 +28,33 @@
         <el-card class="box-card" shadow="hover">
           <template #header>
             <div class="box-card-header">
-              <div class="flex-row-ac">
-                <div>订单<span>{{ `￥${recordState.saleRecordTotalPrice}` }}</span></div>
-                <scroll-number ref="orderScrollNumber" :integer="[0,0,0]" :decimal="[0,0]" @get-number="getOrderSumNumber"/>
+              <div class="flex-row-ac" style="justify-content: space-between">
+                <div style="font-size: 28px">
+                  <span>订单</span>
+                  <span>{{ `￥${recordState.saleRecordTotalPrice}` }}</span>
+                </div>
+
+                <div>
+                  <scroll-number ref="orderScrollNumber" :integer="[0,0,0]"
+                                 :decimal="[0,0]"
+                                 @get-number="getOrderSumNumber"/>
+                </div>
+                <el-button style="height: 80px;width: 88px" :disabled="recordState.goodsList.length === 0"
+                           type="success"
+                           :icon="ArrowRightBold"
+                           @click="pushRecord"/>
               </div>
-              <el-divider direction="vertical" border-style="dashed" style="height: inherit"/>
-              <div class="flex-row-ac">
-                <div>配送<span>{{ `￥${recordState.goodsDeliveryPrice}` }}</span></div>
-                <scroll-number :integer="[0,0,0]" :decimal="[0,0]" @get-number="getNumber"/>
-                <el-button style="margin-left: 5px" type="warning"
-                           :icon="ArrowRightBold" circle
+
+              <el-divider border-style="dashed" style="height: inherit"/>
+
+              <div class="flex-row-ac" style="justify-content: space-between">
+                <div style="font-size: 28px">配送<span>{{ `￥${recordState.goodsDeliveryPrice}` }}</span></div>
+                <div>
+                  <scroll-number :integer="[0,0,0]" :decimal="[0,0]"
+                                 @get-number="getNumber"/>
+                </div>
+                <el-button style="height: 80px;width: 88px" type="warning"
+                           :icon="ArrowRightBold"
                            @click="pushDeliveryPrice"/>
               </div>
             </div>
@@ -193,7 +210,7 @@ const fileState = reactive({
   fileList: []
 })
 
-const orderScrollNumber =ref()
+const orderScrollNumber = ref()
 
 const pushRecord = () => {
   const obj = {
@@ -365,9 +382,6 @@ const getOrderSumNumber = (event: { data: number }) => {
         margin: 0 10px 0 0;
 
         .box-card-header {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-evenly;
 
           .left {
           }

@@ -36,12 +36,14 @@ const add = (index: number, pos: string) => {
   switch (pos) {
     case 'integer' :
       if (numberState.integer[index] === 9) {
+        numberState.integer[index] = 0
         return
       }
       numberState.integer[index]++
       break;
     case 'decimal' :
       if (numberState.decimal[index] === 9) {
+        numberState.decimal[index] = 0
         return
       }
       numberState.decimal[index]++
@@ -54,12 +56,14 @@ const sub = (index: number, pos: string) => {
   switch (pos) {
     case 'integer' :
       if (numberState.integer[index] === 0) {
+        numberState.integer[index] = 9
         return
       }
       numberState.integer[index]--
       break;
     case 'decimal' :
       if (numberState.decimal[index] === 0) {
+        numberState.decimal[index] = 9
         return
       }
       numberState.decimal[index]--
@@ -80,18 +84,18 @@ defineExpose({
     <div class="flex-row-ac">
 
       <div class="flex-col-c-c number-container" v-for="(i,index) in numberState.integer" :key="index">
-        <el-button :disabled="i === 9" size="small" class="button-top" :icon="CaretTop" @click="add(index,'integer')"/>
+        <el-button size="small" class="button-top" :icon="CaretTop" @click="add(index,'integer')"/>
         <el-input :model-value="i" readonly/>
-        <el-button :disabled="i === 0" size="small" class="button-bottom" :icon="CaretBottom"
+        <el-button size="small" class="button-bottom" :icon="CaretBottom"
                    @click="sub(index,'integer')"/>
       </div>
 
       <div style="font-size: 40px">.</div>
 
       <div class="flex-col-c-c number-container" v-for="(i,index) in numberState.decimal" :key="index">
-        <el-button :disabled="i === 9" size="small" class="button-top" :icon="CaretTop" @click="add(index,'decimal')"/>
+        <el-button size="small" class="button-top" :icon="CaretTop" @click="add(index,'decimal')"/>
         <el-input :model-value="i" readonly/>
-        <el-button :disabled="i === 0" size="small" class="button-bottom" :icon="CaretBottom"
+        <el-button size="small" class="button-bottom" :icon="CaretBottom"
                    @click="sub(index,'decimal')"/>
       </div>
 
