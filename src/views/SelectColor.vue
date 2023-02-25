@@ -54,7 +54,7 @@ const setCurrentColor = (rgbColorList: Array<string>): void => {
   colorState.slideR = parseInt(R)
   colorState.slideG = parseInt(G)
   colorState.slideB = parseInt(B)
-  colorState.slideA = parseInt(A)
+  colorState.slideA = parseInt(A) * 100
   colorState.selectedColor = `rgba(${R},${G},${B},${A})`
 }
 
