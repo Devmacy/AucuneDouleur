@@ -20,71 +20,46 @@ const weatherState = reactive({
     }
   },
   refreshDisable: false,
-  privateKey: ''
+  privateKey: '',
+  timeStamp: 0,
+  ip: 'ip'
 })
 
+weatherState.timeStamp = new Date().getTime()
 weatherState.privateKey = localStorage.getItem('weatherPrivateKey') || weatherState.privateKey
 
 /**
  * 获取天气数据
  */
 const getData = () => {
-  getActualWeather('ip', weatherState.privateKey).then((res) => {
+  getActualWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp).then((res) => {
     weatherState.data = res.data?.results[0]
   })
-}
-
-/**
- * 获取天气数据
- */
-const getRecentData = () => {
-  getRecentWeather('ip', weatherState.privateKey).then((res) => {
+  getRecentWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp).then((res) => {
     weatherState.recentData = res.data?.results[0]
   })
 }
 
 getData()
-getRecentData()
 
 /**
  * 刷新数据
  */
 const refresh = () => {
   weatherState.refreshDisable = true
+  weatherState.timeStamp = new Date().getTime()
   getData()
   setTimeout(() => {
     weatherState.refreshDisable = false
   }, 3000)
 }
 
-
-/**
- * 保存密钥到本地
- * @param value 密钥
- */
-const setLocalPrivateKey = (value: string) => {
-  localStorage.setItem('weatherPrivateKey', value);
-}
-
-/**
- * 清除本地密钥
- */
-const clearLocalPrivateKey = () => {
-  weatherState.privateKey = ''
-  localStorage.removeItem('weatherPrivateKey');
-}
-
 </script>
 
 <template>
   <div class="main-container">
-    <el-input v-model="weatherState.privateKey" placeholder="心知天气密钥">
-      <template #append>
-        <el-button @click="refresh" icon="Refresh" :disabled="weatherState.refreshDisable" circle/>
-      </template>
-    </el-input>
-    <el-button @click="setLocalPrivateKey(weatherState.privateKey)" icon="Download">保存密钥到本地</el-button>
-    <el-button @click="clearLocalPrivateKey" icon="Download">清除密钥</el-button>
+    <el-button @click="refresh" icon="Refresh" :disabled="weatherState.refreshDisable" circle/>
+
     <div class="flex-col">
       <span>位置：{{ weatherState.data.location.name }}</span>
       <span>温度：{{ weatherState.data.now.temperature }}℃</span>
