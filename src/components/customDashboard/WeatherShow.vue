@@ -65,16 +65,22 @@ const getData = () => {
   const timeStamp = new Date().getTime()
   getActualWeather(weatherState.ip, timeStamp).then((res: { data: { results: actualRes[] } }) => {
     weatherState.actualData = res.data.results[0]
+  }).catch(()=>{
+    userStore.setFirstTimeStamp(new Date().getTime())
+    userStore.setSign(getSign())
   })
+
   getRecentWeather(weatherState.ip, timeStamp).then((res: { data: { results: recentRes[] } }) => {
     weatherState.recentData = res.data.results[0]
+  }).catch(()=>{
+    userStore.setFirstTimeStamp(new Date().getTime())
+    userStore.setSign(getSign())
   })
 }
 
 // 设置第一次请求时间
 if (!userStore.getFirstTimeStamp()) {
   userStore.setFirstTimeStamp(new Date().getTime())
-  console.warn('time', userStore.getFirstTimeStamp())
   userStore.setSign(getSign())
 }
 getData()
