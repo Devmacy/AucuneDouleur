@@ -2,6 +2,10 @@
 import {getActualWeather, getRecentWeather} from "@/api/weather";
 import {reactive} from "vue";
 
+interface day {
+  text_day:string
+}
+
 const weatherState = reactive({
   data: {
     now: {
@@ -14,7 +18,7 @@ const weatherState = reactive({
   },
 
   recentData: {
-    daily: [],
+    daily: [] as Array<day>,
     location: {
       name: ''
     }
