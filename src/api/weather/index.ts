@@ -8,7 +8,6 @@ const userStore = useUserStore()
 
 const getSign = () => {
     const params = `location=ip&public_key=${userStore.getWeatherPubK()}&ts=${userStore.getFirstTimeStamp()}&ttl=${userStore.getTTL()}`
-    console.warn(params)
     return CryptoJS.HmacSHA1(params, userStore.getWeatherPriK()).toString(CryptoJS.enc.Base64)
 }
 
@@ -22,7 +21,7 @@ const setStore = (ts: number) => {
 const getActualWeather = (location: string, ts: number) => {
     setStore(ts)
     return serviceAxios({
-        url: `https://api.seniverse.com/v3/weather/now.json?location=${location}&public_key=${userStore.getWeatherPubK()}&ts=${ts}&ttl=${userStore.getTTL()}&sig=${encodeURI(userStore.getSign())}`,
+        url: `https://api.seniverse.com/v3/weather/now.json?location=${location}&public_key=${userStore.getWeatherPubK()}&ts=${userStore.getFirstTimeStamp()}&ttl=${userStore.getTTL()}&sig=${encodeURI(userStore.getSign())}`,
         method: "get"
     });
 };
@@ -30,7 +29,7 @@ const getActualWeather = (location: string, ts: number) => {
 const getRecentWeather = (location: string, ts: number) => {
     setStore(ts)
     return serviceAxios({
-        url: `https://api.seniverse.com/v3/weather/daily.json?location=${location}&public_key=${userStore.getWeatherPubK()}&ts=${ts}&ttl=${userStore.getTTL()}&sig=${encodeURI(userStore.getSign())}`,
+        url: `https://api.seniverse.com/v3/weather/daily.json?location=${location}&public_key=${userStore.getWeatherPubK()}&ts=${userStore.getFirstTimeStamp()}&ttl=${userStore.getTTL()}&sig=${encodeURI(userStore.getSign())}`,
         method: "get"
     });
 };

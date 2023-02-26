@@ -47,6 +47,7 @@ const getData = () => {
 // 设置第一次请求时间
 if(!userStore.getFirstTimeStamp()){
   userStore.setFirstTimeStamp(new Date().getTime())
+  console.warn('time',userStore.getFirstTimeStamp())
   userStore.setSign(getSign())
 }
 getData()
