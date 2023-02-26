@@ -32,7 +32,7 @@ export const useLocalStore = defineStore('localStore', {
          * 设置当前语言
          * @param lang 语言
          */
-    setLanguage (lang: string = 'zhCn') {
+    setLanguage (lang = 'zhCn') {
       if (lang === '' || langMap.get(lang) === undefined) {
         return
       }

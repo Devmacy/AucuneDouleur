@@ -407,16 +407,6 @@ const getOrderSumNumber = (event: { data: number }) => {
         }
       }
 
-      .box-secondary-card {
-        width: 24%;
-        margin: 0 2%;
-
-        .box-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-      }
     }
   }
 

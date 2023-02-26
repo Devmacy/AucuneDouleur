@@ -7,14 +7,6 @@ import { useRoute } from 'vue-router'
 const menuStatus = useMenuStore()
 const menuList = menuStatus.menuList
 
-function handleOpen () {
-
-}
-
-function handleClose () {
-
-}
-
 const route = useRoute()
 </script>
 
@@ -23,8 +15,7 @@ const route = useRoute()
 
     <div class="menu-container">
       <el-menu :collapse-transition="false" :default-active="route.path"
-               :router="true" :collapse="menuStatus.isCollapsed" @open="handleOpen"
-               @close="handleClose" class="menu">
+               :router="true" :collapse="menuStatus.isCollapsed" class="menu">
 
         <template v-for="(menu) in menuList" :key="menu.menuId">
           <!--  无子集    -->
