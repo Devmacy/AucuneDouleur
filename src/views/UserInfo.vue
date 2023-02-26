@@ -8,24 +8,29 @@ const userStore = useUserStore()
 const avatarSrc = ref(userStore.userAvatarSrc)
 
 const weatherState = reactive({
+  publicKey: '',
   privateKey: ''
 })
 
+weatherState.publicKey = localStorage.getItem('weatherPublicKey') || weatherState.publicKey
 weatherState.privateKey = localStorage.getItem('weatherPrivateKey') || weatherState.privateKey
 
 /**
  * 保存密钥到本地
- * @param value 密钥
+ * @param publicKey 公钥
+ * @param privateKey 私钥
  */
-const setLocalPrivateKey = (value: string) => {
-  localStorage.setItem('weatherPrivateKey', value);
+const setLocalPrivateKey = (publicKey: string,privateKey:string) => {
+  localStorage.setItem('weatherPublicKey', publicKey);
+  localStorage.setItem('weatherPrivateKey', privateKey);
 }
 
 /**
  * 清除本地密钥
  */
 const clearLocalPrivateKey = () => {
-  weatherState.privateKey = ''
+  weatherState.publicKey = weatherState.privateKey = ''
+  localStorage.removeItem('weatherPublicKey');
   localStorage.removeItem('weatherPrivateKey');
 }
 
@@ -43,9 +48,12 @@ const clearLocalPrivateKey = () => {
     </el-card>
 
     <el-card>
-      <div class="flex-row">
+      <div>
+        <el-input v-model="weatherState.publicKey" placeholder="心知天气公钥"/>
         <el-input v-model="weatherState.privateKey" placeholder="心知天气密钥"/>
-        <el-button style="margin: 0 0 0 10px" @click="setLocalPrivateKey(weatherState.privateKey)" icon="Download">保存密钥</el-button>
+        <el-button @click="setLocalPrivateKey(weatherState.publicKey,weatherState.privateKey)" icon="Download">
+          保存密钥
+        </el-button>
         <el-button @click="clearLocalPrivateKey" icon="Download">清除密钥</el-button>
       </div>
     </el-card>

@@ -21,21 +21,23 @@ const weatherState = reactive({
   },
   refreshDisable: false,
   privateKey: '',
+  publicKey: '',
   timeStamp: 0,
   ip: 'ip'
 })
 
 weatherState.timeStamp = new Date().getTime()
+weatherState.publicKey = localStorage.getItem('weatherPublicKey') || weatherState.publicKey
 weatherState.privateKey = localStorage.getItem('weatherPrivateKey') || weatherState.privateKey
 
 /**
  * 获取天气数据
  */
 const getData = () => {
-  getActualWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp).then((res) => {
+  getActualWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp, weatherState.publicKey).then((res) => {
     weatherState.data = res.data?.results[0]
   })
-  getRecentWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp).then((res) => {
+  getRecentWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp, weatherState.publicKey).then((res) => {
     weatherState.recentData = res.data?.results[0]
   })
 }
