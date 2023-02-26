@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import {getActualWeather, getRecentWeather} from "@/api/weather";
+import {getActualWeather, getRecentWeather, getSign} from "@/api/weather";
 import {reactive} from "vue";
+import {useUserStore} from "@/store/user";
+
+const userStore = useUserStore()
 
 interface day {
-  text_day:string
+  text_day: string
 }
 
 const weatherState = reactive({
@@ -24,28 +27,28 @@ const weatherState = reactive({
     }
   },
   refreshDisable: false,
-  privateKey: '',
-  publicKey: '',
-  timeStamp: 0,
+
   ip: 'ip'
 })
-
-weatherState.timeStamp = new Date().getTime()
-weatherState.publicKey = localStorage.getItem('weatherPublicKey') || weatherState.publicKey
-weatherState.privateKey = localStorage.getItem('weatherPrivateKey') || weatherState.privateKey
 
 /**
  * 获取天气数据
  */
 const getData = () => {
-  getActualWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp, weatherState.publicKey).then((res) => {
+  const timeStamp = new Date().getTime()
+  getActualWeather(weatherState.ip, timeStamp).then((res: any) => {
     weatherState.data = res.data?.results[0]
   })
-  getRecentWeather(weatherState.ip, weatherState.privateKey, weatherState.timeStamp, weatherState.publicKey).then((res) => {
+  getRecentWeather(weatherState.ip, timeStamp).then((res: any) => {
     weatherState.recentData = res.data?.results[0]
   })
 }
 
+// 设置第一次请求时间
+if(!userStore.getFirstTimeStamp()){
+  userStore.setFirstTimeStamp(new Date().getTime())
+  userStore.setSign(getSign())
+}
 getData()
 
 /**
@@ -53,11 +56,10 @@ getData()
  */
 const refresh = () => {
   weatherState.refreshDisable = true
-  weatherState.timeStamp = new Date().getTime()
   getData()
   setTimeout(() => {
     weatherState.refreshDisable = false
-  }, 3000)
+  }, 1000)
 }
 
 </script>

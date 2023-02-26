@@ -2,32 +2,41 @@ import serviceAxios from "@/utils/axios";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import CryptoJS from 'crypto-js'
+import {useUserStore} from "@/store/user";
 
-const TTL = 120
+const userStore = useUserStore()
 
-const getSign = (location: string, PRIVATE_KEY: string, ts: number,PUBLIC_KEY:string) => {
-    const TIME_STAMP = ts ? ts : new Date().getTime()
-    const LOCATION = location ? location : 'ip'
-    const otherParams = `location=${LOCATION}&public_key=${PUBLIC_KEY}&ts=${TIME_STAMP}&ttl=${TTL}`
-    const SIG = CryptoJS.HmacSHA1(otherParams, PRIVATE_KEY).toString(CryptoJS.enc.Base64)
-    return {
-        otherParams,
-        SIG
+const getSign = () => {
+    const params = `location=ip&public_key=${userStore.getWeatherPubK()}&ts=${userStore.getFirstTimeStamp()}&ttl=${userStore.getTTL()}`
+    console.warn(params)
+    return CryptoJS.HmacSHA1(params, userStore.getWeatherPriK()).toString(CryptoJS.enc.Base64)
+}
+
+const setStore = (ts: number) => {
+    if ((ts - userStore.getFirstTimeStamp()) > (userStore.getTTL() * 1000)) {
+        userStore.setFirstTimeStamp(ts)
+        userStore.setSign(getSign())
     }
 }
 
-export const getActualWeather = (location: string, PRIVATE_KEY: string, ts: number, PUBLIC_KEY:string) => {
-    const {otherParams, SIG} = getSign(location, PRIVATE_KEY, ts, PUBLIC_KEY)
+const getActualWeather = (location: string, ts: number) => {
+    setStore(ts)
     return serviceAxios({
-        url: `https://api.seniverse.com/v3/weather/now.json?${otherParams}&sig=${encodeURI(SIG)}`,
+        url: `https://api.seniverse.com/v3/weather/now.json?location=${location}&public_key=${userStore.getWeatherPubK()}&ts=${ts}&ttl=${userStore.getTTL()}&sig=${encodeURI(userStore.getSign())}`,
         method: "get"
     });
 };
 
-export const getRecentWeather = (location: string, PRIVATE_KEY: string, ts: number, PUBLIC_KEY:string) => {
-    const {otherParams, SIG} = getSign(location, PRIVATE_KEY, ts, PUBLIC_KEY)
+const getRecentWeather = (location: string, ts: number) => {
+    setStore(ts)
     return serviceAxios({
-        url: `https://api.seniverse.com/v3/weather/daily.json?${otherParams}&sig=${encodeURI(SIG)}`,
+        url: `https://api.seniverse.com/v3/weather/daily.json?location=${location}&public_key=${userStore.getWeatherPubK()}&ts=${ts}&ttl=${userStore.getTTL()}&sig=${encodeURI(userStore.getSign())}`,
         method: "get"
     });
 };
+
+export {
+    getSign,
+    getActualWeather,
+    getRecentWeather
+}

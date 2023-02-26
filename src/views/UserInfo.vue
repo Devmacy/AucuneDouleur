@@ -12,8 +12,8 @@ const weatherState = reactive({
   privateKey: ''
 })
 
-weatherState.publicKey = localStorage.getItem('weatherPublicKey') || weatherState.publicKey
-weatherState.privateKey = localStorage.getItem('weatherPrivateKey') || weatherState.privateKey
+weatherState.publicKey = userStore.getWeatherPubK()
+weatherState.privateKey = userStore.getWeatherPriK()
 
 /**
  * 保存密钥到本地
@@ -21,8 +21,8 @@ weatherState.privateKey = localStorage.getItem('weatherPrivateKey') || weatherSt
  * @param privateKey 私钥
  */
 const setLocalPrivateKey = (publicKey: string,privateKey:string) => {
-  localStorage.setItem('weatherPublicKey', publicKey);
-  localStorage.setItem('weatherPrivateKey', privateKey);
+  userStore.setWeatherPubK(publicKey)
+  userStore.setWeatherPriK(privateKey)
 }
 
 /**
@@ -30,8 +30,8 @@ const setLocalPrivateKey = (publicKey: string,privateKey:string) => {
  */
 const clearLocalPrivateKey = () => {
   weatherState.publicKey = weatherState.privateKey = ''
-  localStorage.removeItem('weatherPublicKey');
-  localStorage.removeItem('weatherPrivateKey');
+  userStore.setWeatherPubK('')
+  userStore.setWeatherPriK('')
 }
 
 </script>
