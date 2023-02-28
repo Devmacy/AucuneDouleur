@@ -131,7 +131,7 @@ const refresh = () => {
       border-radius: 10px;
       box-sizing: border-box;
       border: var(--el-border-color) solid 1px;
-      margin: 0 5px;
+      margin: 0 6px;
     }
   }
 }
