@@ -37,16 +37,16 @@ const add = (index: number, pos: string) => {
     case 'integer' :
       if (numberState.integer[index] === 9) {
         numberState.integer[index] = 0
-        return
+      } else {
+        numberState.integer[index]++
       }
-      numberState.integer[index]++
       break;
     case 'decimal' :
       if (numberState.decimal[index] === 9) {
         numberState.decimal[index] = 0
-        return
+      } else {
+        numberState.decimal[index]++
       }
-      numberState.decimal[index]++
       break;
   }
   emitNumber()
@@ -57,16 +57,16 @@ const sub = (index: number, pos: string) => {
     case 'integer' :
       if (numberState.integer[index] === 0) {
         numberState.integer[index] = 9
-        return
+      } else {
+        numberState.integer[index]--
       }
-      numberState.integer[index]--
       break;
     case 'decimal' :
       if (numberState.decimal[index] === 0) {
         numberState.decimal[index] = 9
-        return
+      } else {
+        numberState.decimal[index]--
       }
-      numberState.decimal[index]--
       break;
   }
 
