@@ -14,6 +14,7 @@ export const useMenuStore = defineStore('menuStore', {
         },
         { routerPath: '/selectColor', menuName: '取色板', menuId: 'selectColor', icon: 'Edit', children: [] },
         { routerPath: '/saleRecord', menuName: '哇偶宠物店单据录入', menuId: 'code', icon: 'Edit', children: [] },
+        { routerPath: '/mineSweeping', menuName: '扫雷', menuId: 'code', icon: 'Flag', children: [] },
         // { routerPath: '/time', menuName: '时间处理', menuId: 'time', icon: 'Edit', children: [] },
         {
           routerPath: '/setting',
