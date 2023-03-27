@@ -44,6 +44,12 @@ const routes = [
         path: '/mineSweeping',
         name: '扫雷',
         component: async () => await import('@/views/game/mineSweeping.vue')
+    },
+
+    {
+        path: '/threeJs',
+        name: 'three.js',
+        component: async () => await import('@/views/three/ThreeJs.vue')
     }
 ]
 export default createRouter({
