@@ -19,12 +19,19 @@ onMounted(() => {
   const materialParameter = {
     color: 0xff0000,
     transparent: true,//开启透明
-    opacity: 0.5,//透明度
+    opacity: 0.9,//透明度
   }
-  const basicMaterial = new THREE.MeshBasicMaterial(materialParameter)
+  // 基础网格材质,不受光照影响
+  // const material = new THREE.MeshBasicMaterial(materialParameter)
+  // 兰伯特（漫反射）网格材质，受光照影响
+  const material = new THREE.MeshLambertMaterial(materialParameter)
+  // 创建点光源
+  const pointLight = new THREE.PointLight(0xffffff, 0.8)
+  // 更换位置
+  pointLight.position.set(200,120,100)
 
 // 创建一个网格模型
-  const mesh = new THREE.Mesh(cube, basicMaterial)
+  const mesh = new THREE.Mesh(cube, material)
 
 // 定义网格模型的位置
   const meshPos = {
@@ -41,6 +48,8 @@ onMounted(() => {
   scene.add(mesh)
   // 将三维坐标参考系添加到场景中
   scene.add(axesHelper)
+  // 将光源添加到场景中
+  scene.add(pointLight)
 
   // 创建一个webGl渲染器
   const webGLRender = new THREE.WebGLRenderer()
@@ -62,7 +71,7 @@ onMounted(() => {
   // 设置相机所在位置，是在mesh的内部还是外部
   const cameraPosition = {
     x: 200,
-    y: 20,
+    y: 120,
     z: 100
   }
   camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
