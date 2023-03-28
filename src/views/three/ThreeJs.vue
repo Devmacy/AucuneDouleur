@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 import {onMounted} from "vue";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 onMounted(() => {
   // 创建一个三维场景
@@ -28,7 +29,7 @@ onMounted(() => {
   // 创建点光源
   const pointLight = new THREE.PointLight(0xffffff, 0.8)
   // 更换位置
-  pointLight.position.set(200,120,100)
+  pointLight.position.set(200, 120, 100)
 
 // 创建一个网格模型
   const mesh = new THREE.Mesh(cube, material)
@@ -90,6 +91,12 @@ onMounted(() => {
   webGLRender.render(scene, camera)
 
   renderCanvas.appendChild(webGLRender.domElement)
+
+  // 创建相机轨道控制器
+  const controls = new OrbitControls(camera, webGLRender.domElement)
+  controls.addEventListener('change', () => {
+    webGLRender.render(scene, camera)
+  })
 })
 </script>
 
