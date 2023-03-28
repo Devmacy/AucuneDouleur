@@ -7,29 +7,40 @@ onMounted(() => {
   const scene = new THREE.Scene()
 
   // 定义几何体长宽高
-  const cubeWidth = 50
-  const cubeHeight = 50
-  const cubeDepth = 50
+  const boxParameter = {
+    width: 80,
+    height: 40,
+    depth: 10
+  }
   // 创建一个几何体
-  const cube = new THREE.BoxGeometry(cubeWidth, cubeHeight, cubeDepth)
+  const cube = new THREE.BoxGeometry(boxParameter.width, boxParameter.height, boxParameter.depth)
 
   // 定义材质
-  const basicColor = {color: 0xff0000}
-  const basicMaterial = new THREE.MeshBasicMaterial(basicColor)
+  const materialParameter = {
+    color: 0xff0000,
+    transparent: true,//开启透明
+    opacity: 0.5,//透明度
+  }
+  const basicMaterial = new THREE.MeshBasicMaterial(materialParameter)
 
 // 创建一个网格模型
   const mesh = new THREE.Mesh(cube, basicMaterial)
 
 // 定义网格模型的位置
   const meshPos = {
-    x: 0,
-    y: 0,
-    z: 0
+    x: 40,
+    y: 20,
+    z: 5
   }
   mesh.position.set(meshPos.x, meshPos.y, meshPos.z)
 
+  // 创建一个三维坐标参考系
+  const axesHelper = new THREE.AxesHelper(100)
+
   // 将网格模型添加到场景中
   scene.add(mesh)
+  // 将三维坐标参考系添加到场景中
+  scene.add(axesHelper)
 
   // 创建一个webGl渲染器
   const webGLRender = new THREE.WebGLRenderer()
@@ -41,15 +52,17 @@ onMounted(() => {
   const width = renderCanvas.clientWidth
   const height = renderCanvas.clientHeight
   // 创建一个透视投影相机
-  const fov = 50
-  const aspect = width / height
-  const near = 0.1
-  const far = 2000
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+  const cameraParams = {
+    fov: 50,
+    aspect: width / height,
+    near: 1,
+    far: 300
+  }
+  const camera = new THREE.PerspectiveCamera(cameraParams.fov, cameraParams.aspect, cameraParams.near, cameraParams.far)
   // 设置相机所在位置，是在mesh的内部还是外部
   const cameraPosition = {
-    x: 100,
-    y: 100,
+    x: 200,
+    y: 20,
     z: 100
   }
   camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z)
