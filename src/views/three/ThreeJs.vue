@@ -26,12 +26,8 @@ onMounted(() => {
   // const material = new THREE.MeshBasicMaterial(materialParameter)
   // 兰伯特（漫反射）网格材质，受光照影响
   const material = new THREE.MeshLambertMaterial(materialParameter)
-  // 创建点光源
-  const pointLight = new THREE.PointLight(0xffffff, 0.8)
-  // 更换位置
-  pointLight.position.set(200, 120, 100)
 
-// 创建一个网格模型
+  // 创建一个网格模型
   const mesh = new THREE.Mesh(cube, material)
 
 // 定义网格模型的位置
@@ -42,6 +38,21 @@ onMounted(() => {
   }
   mesh.position.set(meshPos.x, meshPos.y, meshPos.z)
 
+  // 创建点光源
+  const pointLight = new THREE.PointLight(0xffffff, 0.8)
+  //创建环境光
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.3)
+  // 创建一个平行光
+  const directionLight = new THREE.DirectionalLight(0xff0000, 0.45)
+  directionLight.position.set(140, 120, 100)
+  directionLight.target = mesh
+  // 创建平行光可视化
+  const directionLightHelper = new THREE.DirectionalLightHelper(directionLight)
+  // 创建点光源可视化
+  // const pointLightHelper = new THREE.PointLightHelper(pointLight)
+  // 更换位置
+  pointLight.position.set(100, 120, 100)
+
   // 创建一个三维坐标参考系
   const axesHelper = new THREE.AxesHelper(100)
 
@@ -51,6 +62,14 @@ onMounted(() => {
   scene.add(axesHelper)
   // 将光源添加到场景中
   scene.add(pointLight)
+  // 将光源添加到场景中
+  scene.add(ambientLight)
+  // 将光源添加到场景中
+  // scene.add(directionLight)
+  // 将光源辅助添加到场景中
+  // scene.add(pointLightHelper)
+  // 将光源辅助添加到场景中
+  scene.add(directionLightHelper)
 
   // 创建一个webGl渲染器
   const webGLRender = new THREE.WebGLRenderer()
