@@ -47,10 +47,21 @@ const routes = [
     },
 
     {
-        path: '/threeJs',
-        name: 'three.js',
-        component: async () => await import('@/views/three/ThreeJs.vue')
-    }
+        path: '/three',
+        name: 'three',
+        children: [
+            {
+                path: 'threeJs',
+                name: 'threeJs',
+                component: async () => await import('@/views/three/ThreeJs.vue')
+            },
+            {
+                path: 'arrayCube',
+                name: 'arrayCube',
+                component: async () => await import('@/views/three/ArrayCube.vue')
+            }
+        ],
+    },
 ]
 export default createRouter({
     history: createWebHistory(),

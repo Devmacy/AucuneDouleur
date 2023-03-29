@@ -164,7 +164,6 @@ onMounted(() => {
   }
   render()
 
-  // 浏览器窗口宽和高
   // 创建相机轨道控制器，
   const controls = new OrbitControls(camera, webGLRender.domElement)
   controls.addEventListener('change', () => {
