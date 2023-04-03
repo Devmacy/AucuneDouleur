@@ -31,7 +31,12 @@ geometry.attributes.position = bufferAttribute
 geometry.attributes.normal = new THREE.BufferAttribute(normal, 3)
 
 // 创建线模型材质
-const meshLambertMaterial = new THREE.MeshLambertMaterial({color: 0xffff00, side: THREE.DoubleSide})
+const meshLambertMaterial = new THREE.MeshLambertMaterial({
+    color: 0xffff00,
+    side: THREE.DoubleSide,
+    // 线框
+    // wireframe:true
+})
 // 定义线模型
 const meshLambertModel = new THREE.Mesh(geometry, meshLambertMaterial)
 
