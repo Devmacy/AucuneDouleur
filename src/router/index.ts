@@ -64,6 +64,11 @@ const routes = [
                 path: 'generalGeometry',
                 name: 'GeneralGeometry',
                 component: async () => await import('@/views/three/bufferGeometry/GeneralGeometry.vue')
+            },
+            {
+                path: 'object3D',
+                name: 'Object3D',
+                component: async () => await import('@/views/three/object3D/Object3D.vue')
             }
         ],
     },

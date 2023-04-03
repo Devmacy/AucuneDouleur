@@ -1,37 +1,15 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, reactive} from "vue";
-import {camera, scene, stats, webGLRender} from "@/views/three/scene";
-import {pointModel} from "@/views/three/bufferGeometry/point";
-import {lineModel} from "@/views/three/bufferGeometry/line";
-import {meshModel} from "@/views/three/bufferGeometry/mesh";
-import {meshLambertModel} from "@/views/three/bufferGeometry/meshLambert";
-import {planeMeshModel} from "@/views/three/bufferGeometry/translate";
+import {camera, pointLight, scene, stats, webGLRender} from "@/views/three/scene";
+import {model} from "@/views/three/object3D/v3";
 
 const generalState = reactive({
-  type: '点模型'
+  type: '矢量'
 })
 
 const setType = (value: string) => {
-  scene.remove(lineModel)
-  scene.remove(pointModel)
-  scene.remove(meshModel)
-  scene.remove(meshLambertModel)
-  scene.remove(planeMeshModel)
-
-  if (value === '点模型') {
-    scene.add(pointModel)
-  }
-  if (value === '线模型') {
-    scene.add(lineModel)
-  }
-  if (value === '网格模型') {
-    scene.add(meshModel)
-  }
-  if (value === '网格Lambert模型') {
-    scene.add(meshLambertModel)
-  }
-  if (value === '模型变换') {
-    scene.add(planeMeshModel)
+  if (value === '矢量') {
+    console.log()
   }
   webGLRender.render(scene, camera)
 }
@@ -44,11 +22,13 @@ onMounted(() => {
   // 定义渲染输出的画布尺寸宽
   const height = renderCanvas.clientHeight
 
-  // 将模型添加到场景中
-  scene.add(pointModel)
-
   camera.aspect = width / height
   camera.updateProjectionMatrix();
+
+  // 点光源位置
+  pointLight.position.set(-300, 300, 300)
+
+  scene.add(model)
 
   // 设置渲染器的渲染大小
   webGLRender.setSize(width, height)
@@ -68,18 +48,13 @@ onUnmounted(() => {
     }
   }
 })
-
 </script>
 
 <template>
   <div class="main">
     <div id="tab" class="tab">
       <el-radio-group v-model="generalState.type" @change="setType">
-        <el-radio-button label="点模型"/>
-        <el-radio-button label="线模型"/>
-        <el-radio-button label="网格模型"/>
-        <el-radio-button label="网格Lambert模型"/>
-        <el-radio-button label="模型变换"/>
+        <el-radio-button label="矢量"/>
       </el-radio-group>
     </div>
     <div class="main-scene" id="mainScene"/>
