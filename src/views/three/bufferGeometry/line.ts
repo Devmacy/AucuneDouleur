@@ -3,13 +3,12 @@ import * as THREE from "three";
 
 const vertices = new Float32Array([
     0, 0, 0,
-    100, 0, 0,
-    0, 100, 0,
+    50, 100, 50,
     0, 0, 100,
-    0, 100, 100,
     100, 0, 100,
-    100, 100, 0,
-    100, 100, 100,
+    100, 0, 0,
+    50, 100, 50,
+    100, 0, 100
 ])
 // 创建属性缓冲对象
 const bufferAttribute = new THREE.BufferAttribute(vertices, 3)
@@ -19,11 +18,11 @@ const geometry = new THREE.BufferGeometry()
 // 设置几何体attribute位置属性
 geometry.attributes.position = bufferAttribute
 
-// 创建点模型材质
-const pointsMaterial = new THREE.PointsMaterial({color: 0xffff00, size: 10})
-// 定义点模型
-const pointModel = new THREE.Points(geometry, pointsMaterial)
+// 创建线模型材质
+const lineMaterial = new THREE.LineBasicMaterial({color: 0xffff00})
+// 定义线模型
+const lineModel = new THREE.Line(geometry, lineMaterial)
 
 export {
-    pointModel
+    lineModel
 }

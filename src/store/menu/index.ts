@@ -38,9 +38,9 @@ export const useMenuStore = defineStore('menuStore', {
                             children: []
                         },
                         {
-                            routerPath: '/three/point',
-                            menuName: '点模型',
-                            menuId: 'point',
+                            routerPath: '/three/generalGeometry',
+                            menuName: '基础模型',
+                            menuId: 'FDB9FF89-0536-83DE-445A-D502F23DC464',
                             icon: 'Bowl',
                             children: []
                         },

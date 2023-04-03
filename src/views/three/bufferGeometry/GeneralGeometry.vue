@@ -1,7 +1,24 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
+import {onMounted, reactive} from "vue";
 import {camera, scene, stats, webGLRender} from "@/views/three/bufferGeometry/scene";
 import {pointModel} from "@/views/three/bufferGeometry/point";
+import {lineModel} from "@/views/three/bufferGeometry/line";
+
+const generalState = reactive({
+  type: '点模型'
+})
+
+const setType = (value: string) => {
+  if (value === '点模型') {
+    scene.remove(lineModel)
+    scene.add(pointModel)
+  }
+  if (value === '线模型') {
+    scene.remove(pointModel)
+    scene.add(lineModel)
+  }
+  webGLRender.render(scene, camera)
+}
 
 onMounted(() => {
   // 网页画布
@@ -23,12 +40,19 @@ onMounted(() => {
   webGLRender.render(scene, camera)
   // 挂载dom
   renderCanvas.appendChild(webGLRender.domElement)
+  stats.domElement.style.top = '40px'
   renderCanvas.appendChild(stats.domElement)
 })
 </script>
 
 <template>
   <div class="main">
+    <div class="tab">
+      <el-radio-group v-model="generalState.type" @change="setType">
+        <el-radio label="点模型" border/>
+        <el-radio label="线模型" border/>
+      </el-radio-group>
+    </div>
     <div class="main-scene" id="mainScene"/>
   </div>
 </template>
@@ -39,9 +63,15 @@ onMounted(() => {
   width: 100%;
   box-sizing: border-box;
   position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .tab {
+
+  }
 
   .main-scene {
-    height: 100%;
+    flex: 1;
     width: 100%;
     box-sizing: border-box
   }
