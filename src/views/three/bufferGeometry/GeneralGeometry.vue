@@ -3,19 +3,25 @@ import {onMounted, reactive} from "vue";
 import {camera, scene, stats, webGLRender} from "@/views/three/bufferGeometry/scene";
 import {pointModel} from "@/views/three/bufferGeometry/point";
 import {lineModel} from "@/views/three/bufferGeometry/line";
+import {meshModel} from "@/views/three/bufferGeometry/mesh";
 
 const generalState = reactive({
   type: '点模型'
 })
 
 const setType = (value: string) => {
+  scene.remove(lineModel)
+  scene.remove(pointModel)
+  scene.remove(meshModel)
+
   if (value === '点模型') {
-    scene.remove(lineModel)
     scene.add(pointModel)
   }
   if (value === '线模型') {
-    scene.remove(pointModel)
     scene.add(lineModel)
+  }
+  if (value === '网格模型') {
+    scene.add(meshModel)
   }
   webGLRender.render(scene, camera)
 }
@@ -51,6 +57,7 @@ onMounted(() => {
       <el-radio-group v-model="generalState.type" @change="setType">
         <el-radio label="点模型" border/>
         <el-radio label="线模型" border/>
+        <el-radio label="网格模型" border/>
       </el-radio-group>
     </div>
     <div class="main-scene" id="mainScene"/>

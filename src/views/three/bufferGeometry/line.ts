@@ -1,4 +1,3 @@
-// 定义顶点坐标数据(类型化数组）
 import * as THREE from "three";
 
 const vertices = new Float32Array([
