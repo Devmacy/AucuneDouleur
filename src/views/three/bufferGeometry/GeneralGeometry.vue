@@ -5,6 +5,7 @@ import {pointModel} from "@/views/three/bufferGeometry/point";
 import {lineModel} from "@/views/three/bufferGeometry/line";
 import {meshModel} from "@/views/three/bufferGeometry/mesh";
 import {meshLambertModel} from "@/views/three/bufferGeometry/meshLambert";
+import {planeMeshModel} from "@/views/three/bufferGeometry/translate";
 
 const generalState = reactive({
   type: '点模型'
@@ -15,6 +16,7 @@ const setType = (value: string) => {
   scene.remove(pointModel)
   scene.remove(meshModel)
   scene.remove(meshLambertModel)
+  scene.remove(planeMeshModel)
 
   if (value === '点模型') {
     scene.add(pointModel)
@@ -27,6 +29,9 @@ const setType = (value: string) => {
   }
   if (value === '网格Lambert模型') {
     scene.add(meshLambertModel)
+  }
+  if (value === '模型变换') {
+    scene.add(planeMeshModel)
   }
   webGLRender.render(scene, camera)
 }
@@ -51,19 +56,21 @@ onMounted(() => {
   webGLRender.render(scene, camera)
   // 挂载dom
   renderCanvas.appendChild(webGLRender.domElement)
-  stats.domElement.style.top = '40px'
+  const tab = document.getElementById('tab') as HTMLElement
+  stats.domElement.style.top = tab.offsetHeight + 'px'
   renderCanvas.appendChild(stats.domElement)
 })
 </script>
 
 <template>
   <div class="main">
-    <div class="tab">
+    <div id="tab" class="tab">
       <el-radio-group v-model="generalState.type" @change="setType">
-        <el-radio label="点模型" border/>
-        <el-radio label="线模型" border/>
-        <el-radio label="网格模型" border/>
-        <el-radio label="网格Lambert模型" border/>
+        <el-radio-button label="点模型"/>
+        <el-radio-button label="线模型"/>
+        <el-radio-button label="网格模型"/>
+        <el-radio-button label="网格Lambert模型"/>
+        <el-radio-button label="模型变换"/>
       </el-radio-group>
     </div>
     <div class="main-scene" id="mainScene"/>

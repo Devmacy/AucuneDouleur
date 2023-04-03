@@ -49,9 +49,9 @@ geometry.attributes.position = bufferAttribute
 // 定义缓冲对象
 geometry.index = new THREE.BufferAttribute(index, 1)
 
-// 创建线模型材质
+// 创建模型材质
 const meshMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide})
-// 定义线模型
+// 定义模型
 const meshModel = new THREE.Mesh(geometry, meshMaterial)
 
 export {
