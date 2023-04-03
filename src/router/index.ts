@@ -59,6 +59,11 @@ const routes = [
                 path: 'arrayCube',
                 name: 'arrayCube',
                 component: async () => await import('@/views/three/ArrayCube.vue')
+            },
+            {
+                path: 'point',
+                name: 'point',
+                component: async () => await import('@/views/three/bufferGeometry/PointGeometry.vue')
             }
         ],
     },

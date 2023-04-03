@@ -37,6 +37,13 @@ export const useMenuStore = defineStore('menuStore', {
                             icon: 'Bowl',
                             children: []
                         },
+                        {
+                            routerPath: '/three/point',
+                            menuName: '点模型',
+                            menuId: 'point',
+                            icon: 'Bowl',
+                            children: []
+                        },
                     ]
                 },
                 // { routerPath: '/time', menuName: '时间处理', menuId: 'time', icon: 'Edit', children: [] },
