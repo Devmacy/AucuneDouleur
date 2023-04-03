@@ -4,6 +4,7 @@ import {camera, scene, stats, webGLRender} from "@/views/three/bufferGeometry/sc
 import {pointModel} from "@/views/three/bufferGeometry/point";
 import {lineModel} from "@/views/three/bufferGeometry/line";
 import {meshModel} from "@/views/three/bufferGeometry/mesh";
+import {meshLambertModel} from "@/views/three/bufferGeometry/meshLambert";
 
 const generalState = reactive({
   type: '点模型'
@@ -13,6 +14,7 @@ const setType = (value: string) => {
   scene.remove(lineModel)
   scene.remove(pointModel)
   scene.remove(meshModel)
+  scene.remove(meshLambertModel)
 
   if (value === '点模型') {
     scene.add(pointModel)
@@ -22,6 +24,9 @@ const setType = (value: string) => {
   }
   if (value === '网格模型') {
     scene.add(meshModel)
+  }
+  if (value === '网格Lambert模型') {
+    scene.add(meshLambertModel)
   }
   webGLRender.render(scene, camera)
 }
@@ -58,6 +63,7 @@ onMounted(() => {
         <el-radio label="点模型" border/>
         <el-radio label="线模型" border/>
         <el-radio label="网格模型" border/>
+        <el-radio label="网格Lambert模型" border/>
       </el-radio-group>
     </div>
     <div class="main-scene" id="mainScene"/>
