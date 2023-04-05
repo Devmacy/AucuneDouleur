@@ -5,10 +5,11 @@ import {model} from "@/views/three/object3D/v3";
 import {group} from "@/views/three/object3D/group";
 
 const generalState = reactive({
-  type: 'group'
+  type: '矢量'
 })
 
 const setType = (value: string) => {
+  // eslint-disable-next-line no-undef
   scene.remove(model, group)
   if (value === '矢量') {
     scene.add(model)
