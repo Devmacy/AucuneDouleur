@@ -49,8 +49,7 @@ onMounted(() => {
 
   const render = () => {
     model.rotation.x += 0.01
-    model.rotation.y += 0.01
-    model.rotation.z += 0.01
+    model.rotation.y += 0.03
     webGLRender.render(scene, camera)
     stats.update()
     requestAnimationFrame(render)
@@ -66,7 +65,6 @@ onMounted(() => {
       item.add(helper)
     }
   })
-  console.log(positionV3)
 })
 
 onUnmounted(() => {

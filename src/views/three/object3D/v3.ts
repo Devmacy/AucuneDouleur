@@ -2,6 +2,9 @@ import * as THREE from "three";
 
 const cubeGeometry = new THREE.BoxGeometry(100, 100, 100)
 
+// 移动几何体的位置
+cubeGeometry.translate(50, 0, 0)
+
 const cubeMaterial = new THREE.MeshLambertMaterial({
     color: 0x00fffff
 })
