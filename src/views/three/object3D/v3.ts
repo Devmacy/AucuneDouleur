@@ -8,7 +8,7 @@ const cubeMaterial = new THREE.MeshLambertMaterial({
 
 const model = new THREE.Mesh(cubeGeometry, cubeMaterial)
 
-const v3 = new THREE.Vector3(0, 100, 0)
+const v3 = new THREE.Vector3(0, 0, 0)
 v3.normalize()
 // model.position.x = 100
 // model.position.x = 0
@@ -16,12 +16,13 @@ v3.normalize()
 // model.scale.x = 1
 // model.translateZ(100)
 // model.translateZ(-100)
-// model.rotateX(30)
-// model.rotateX(-30)
+// model.rotateX(Math.PI / 100)
+model.rotation.x = Math.PI / 5
+// console.log(model.rotation)
 model.material.setValues({
     wireframe: true
 })
-model.translateOnAxis(v3, 50)
+// model.translateOnAxis(v3, 50)
 export {
     model
 }

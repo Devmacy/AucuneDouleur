@@ -39,6 +39,16 @@ onMounted(() => {
   const tab = document.getElementById('tab') as HTMLElement
   stats.domElement.style.top = tab.offsetHeight + 'px'
   renderCanvas.appendChild(stats.domElement)
+
+  const render = () => {
+    model.rotation.x +=0.01
+    model.rotation.y +=0.01
+    model.rotation.z +=0.01
+    webGLRender.render(scene, camera)
+    stats.update()
+    requestAnimationFrame(render)
+  }
+  render()
 })
 
 onUnmounted(() => {
