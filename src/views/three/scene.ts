@@ -2,9 +2,6 @@ import * as THREE from "three";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 
-// 创建一个三维场景
-const scene = new THREE.Scene()
-
 // 创建点光源
 const pointLight = new THREE.PointLight(0xffffff, 1)
 // 点光源位置
@@ -29,9 +26,6 @@ const webGLRender = new THREE.WebGLRenderer()
 const controls = new OrbitControls(camera, webGLRender.domElement)
 controls.target.set(0, 0, 0)
 controls.update()
-controls.addEventListener('change', () => {
-    webGLRender.render(scene, camera)
-})
 
 //引入性能监视器
 // eslint-disable-next-line
@@ -41,19 +35,12 @@ stats.domElement.style.position = 'absolute'
 stats.domElement.style.left = '0px'
 stats.domElement.style.top = '0px'
 
-// 将三维坐标参考系添加到场景中
-scene.add(axesHelper)
-// 将光源添加到场景中
-scene.add(pointLight)
-// 将光源添加到场景中
-scene.add(ambientLight)
-
 export {
-    scene,
     webGLRender,
     camera,
     axesHelper,
     pointLight,
     ambientLight,
-    stats
+    stats,
+    controls
 }

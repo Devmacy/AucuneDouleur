@@ -1,12 +1,24 @@
 <script setup lang="ts">
 import * as THREE from "three";
-import {onMounted, onUnmounted, reactive} from "vue";
-import {camera, pointLight, scene, stats, webGLRender} from "@/views/three/scene";
+import {onMounted, reactive} from "vue";
+import {ambientLight, axesHelper, camera, controls, pointLight, stats, webGLRender} from "@/views/three/scene";
 import {model} from "@/views/three/object3D/v3";
 import {group} from "@/views/three/object3D/group";
 
 const generalState = reactive({
   type: '矢量'
+})
+
+// 创建一个三维场景
+const scene = new THREE.Scene()
+// 将三维坐标参考系添加到场景中
+scene.add(axesHelper)
+// 将光源添加到场景中
+scene.add(pointLight)
+// 将光源添加到场景中
+scene.add(ambientLight)
+controls.addEventListener('change', () => {
+  webGLRender.render(scene, camera)
 })
 
 const setType = (value: string) => {
@@ -67,13 +79,6 @@ onMounted(() => {
   })
 })
 
-onUnmounted(() => {
-  for (let i = 0; i < scene.children.length; i++) {
-    if (i === scene.children.length - 1) {
-      scene.remove(scene.children[i])
-    }
-  }
-})
 </script>
 
 <template>

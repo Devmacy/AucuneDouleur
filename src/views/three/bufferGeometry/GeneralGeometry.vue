@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, reactive} from "vue";
-import {camera, scene, stats, webGLRender} from "@/views/three/scene";
+import {onMounted, reactive} from "vue";
+import {ambientLight, axesHelper, camera, controls, pointLight, stats, webGLRender} from "@/views/three/scene";
 import {pointModel} from "@/views/three/bufferGeometry/point";
 import {lineModel} from "@/views/three/bufferGeometry/line";
 import {meshModel} from "@/views/three/bufferGeometry/mesh";
 import {meshLambertModel} from "@/views/three/bufferGeometry/meshLambert";
 import {planeMeshModel} from "@/views/three/bufferGeometry/translate";
+import * as THREE from "three";
 
 const generalState = reactive({
   type: '点模型'
+})
+
+// 创建一个三维场景
+const scene = new THREE.Scene()
+// 将三维坐标参考系添加到场景中
+scene.add(axesHelper)
+// 将光源添加到场景中
+scene.add(pointLight)
+// 将光源添加到场景中
+scene.add(ambientLight)
+controls.addEventListener('change', () => {
+  webGLRender.render(scene, camera)
 })
 
 const setType = (value: string) => {
@@ -59,14 +72,6 @@ onMounted(() => {
   const tab = document.getElementById('tab') as HTMLElement
   stats.domElement.style.top = tab.offsetHeight + 'px'
   renderCanvas.appendChild(stats.domElement)
-})
-
-onUnmounted(() => {
-  for (let i = 0; i < scene.children.length; i++) {
-    if (i === scene.children.length - 1) {
-      scene.remove(scene.children[i])
-    }
-  }
 })
 
 </script>
