@@ -2,14 +2,19 @@
 import {onMounted, onUnmounted, reactive} from "vue";
 import {camera, pointLight, scene, stats, webGLRender} from "@/views/three/scene";
 import {model} from "@/views/three/object3D/v3";
+import {group} from "@/views/three/object3D/group";
 
 const generalState = reactive({
-  type: '矢量'
+  type: 'group'
 })
 
 const setType = (value: string) => {
+  scene.remove(model, group)
   if (value === '矢量') {
-    console.log()
+    scene.add(model)
+  }
+  if (value === 'group') {
+    scene.add(group)
   }
   webGLRender.render(scene, camera)
 }
@@ -28,7 +33,7 @@ onMounted(() => {
   // 点光源位置
   pointLight.position.set(-300, 300, 300)
 
-  scene.add(model)
+  generalState.type === '矢量' ? scene.add(model) : ''
 
   // 设置渲染器的渲染大小
   webGLRender.setSize(width, height)
@@ -41,9 +46,9 @@ onMounted(() => {
   renderCanvas.appendChild(stats.domElement)
 
   const render = () => {
-    model.rotation.x +=0.01
-    model.rotation.y +=0.01
-    model.rotation.z +=0.01
+    model.rotation.x += 0.01
+    model.rotation.y += 0.01
+    model.rotation.z += 0.01
     webGLRender.render(scene, camera)
     stats.update()
     requestAnimationFrame(render)
@@ -65,6 +70,7 @@ onUnmounted(() => {
     <div id="tab" class="tab">
       <el-radio-group v-model="generalState.type" @change="setType">
         <el-radio-button label="矢量"/>
+        <el-radio-button label="group"/>
       </el-radio-group>
     </div>
     <div class="main-scene" id="mainScene"/>
