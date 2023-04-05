@@ -47,14 +47,14 @@ onMounted(() => {
   stats.domElement.style.top = tab.offsetHeight + 'px'
   renderCanvas.appendChild(stats.domElement)
 
-  const render = () => {
-    model.rotation.x += 0.01
-    model.rotation.y += 0.03
-    webGLRender.render(scene, camera)
-    stats.update()
-    requestAnimationFrame(render)
-  }
-  render()
+  // const render = () => {
+  //   model.rotation.x += 0.01
+  //   model.rotation.y += 0.03
+  //   webGLRender.render(scene, camera)
+  //   stats.update()
+  //   requestAnimationFrame(render)
+  // }
+  // render()
 
   // 4号楼的位置
   const positionV3 = new THREE.Vector3()
