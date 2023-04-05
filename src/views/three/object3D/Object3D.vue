@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import * as THREE from "three";
 import {onMounted, onUnmounted, reactive} from "vue";
 import {camera, pointLight, scene, stats, webGLRender} from "@/views/three/scene";
 import {model} from "@/views/three/object3D/v3";
@@ -55,6 +56,17 @@ onMounted(() => {
     requestAnimationFrame(render)
   }
   render()
+
+  // 4号楼的位置
+  const positionV3 = new THREE.Vector3()
+  group.traverseVisible((item) => {
+    if (item.name === '洋房：4号楼') {
+      item.getWorldPosition(positionV3)
+      const helper = new THREE.AxesHelper(10)
+      item.add(helper)
+    }
+  })
+  console.log(positionV3)
 })
 
 onUnmounted(() => {

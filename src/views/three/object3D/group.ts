@@ -37,12 +37,10 @@ group1.position.set(0, 15, 40)
 group2.position.set(0, 30, 0)
 
 group.add(group1, group2)
-// group.traverseVisible((item) => {
-//     console.log(item)
-// })
 
 const node = group.getObjectByName('洋房：4号楼') as THREE.Mesh
 (node.material as THREE.MeshLambertMaterial).color.set(0xff0000)
+
 export {
     group
 }
