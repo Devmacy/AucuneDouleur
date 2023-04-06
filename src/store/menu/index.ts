@@ -51,6 +51,13 @@ export const useMenuStore = defineStore('menuStore', {
                             icon: 'Bowl',
                             children: []
                         },
+                        {
+                            routerPath: '/three/uv',
+                            menuName: 'uv',
+                            menuId: '979FB34D-B073-5C0C-3906-FA21E1FC290B',
+                            icon: 'Bowl',
+                            children: []
+                        },
                     ]
                 },
                 // { routerPath: '/time', menuName: '时间处理', menuId: 'time', icon: 'Edit', children: [] },

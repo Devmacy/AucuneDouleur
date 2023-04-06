@@ -69,6 +69,11 @@ const routes = [
                 path: 'object3D',
                 name: 'Object3D',
                 component: async () => await import('@/views/three/object3D/Object3D.vue')
+            },
+            {
+                path: 'uv',
+                name: 'UV',
+                component: async () => await import('@/views/three/uv/UVMapping.vue')
             }
         ],
     },
