@@ -228,6 +228,8 @@ const pushRecord = () => {
 
   // 重置数量
   recordState.goodsCount = 1
+  // 重置该商品为1件的价格
+  recordState.goodsTotalPrice = recordState.goodsPrice
   recordState.saleRecordTotalPrice = 0
   orderScrollNumber.value.init()
 }
