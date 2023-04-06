@@ -1,6 +1,7 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import viteCompression from 'vite-plugin-compression'
+import topLevelAwait from 'vite-plugin-top-level-await'
 
 import {resolve} from 'path'
 
@@ -10,6 +11,10 @@ export default defineConfig({
         vue(),
         viteCompression({
             threshold: 1024 // 对大于 100kb 的文件进行压缩
+        }),
+        topLevelAwait({
+            promiseExportName: '__tla',
+            promiseImportName: i => `__tla_${i}`
         })
     ],
 
