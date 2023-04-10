@@ -5,7 +5,7 @@ import {DoubleSide} from "three";
 const geometry = new THREE.SphereGeometry(50, 64, 32)
 const buffGeometry = new THREE.BufferGeometry()
 const circleGeometry = new THREE.CircleGeometry(50, 64)
-const planeGeometry = new THREE.PlaneGeometry(2000, 2000)
+const planeGeometry = new THREE.PlaneGeometry(1000, 1000)
 
 const vertices = new Float32Array([
     0, 0, 0,
@@ -30,6 +30,9 @@ const uvs = new Float32Array([
 //创建一个纹理加载器
 const textureLoad = new THREE.TextureLoader()
 const textureRes = await textureLoad.loadAsync(earth)
+textureRes.wrapS = THREE.RepeatWrapping
+textureRes.wrapT = THREE.RepeatWrapping
+
 // textureRes.wrapS = THREE.RepeatWrapping
 // textureRes.wrapT = THREE.RepeatWrapping
 // textureRes.repeat.set(4, 4)
@@ -40,7 +43,9 @@ buffGeometry.attributes.uv = new THREE.BufferAttribute(uvs, 2)
 
 const bufferMaterial = new THREE.MeshBasicMaterial({
     side: DoubleSide,
-    map: textureRes
+    map: textureRes,
+    // 透明贴图设置此项
+    // transparent: true
 })
 
 const mesh1 = new THREE.Mesh(buffGeometry, bufferMaterial)
@@ -61,5 +66,6 @@ export {
     mesh,
     mesh1,
     mesh2,
-    mesh3
+    mesh3,
+    textureRes
 }

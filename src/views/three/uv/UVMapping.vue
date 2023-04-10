@@ -29,6 +29,9 @@ onMounted(() => {
   const width = renderCanvas.clientWidth
   // 定义渲染输出的画布尺寸宽
   const height = renderCanvas.clientHeight
+  // 创建网格参考
+  // const gridHelper = new THREE.GridHelper(3000, 500, 0xff0000, 0x00ffff)
+  // scene.add(gridHelper)
 
   camera.aspect = width / height
   camera.updateProjectionMatrix();
@@ -41,6 +44,15 @@ onMounted(() => {
   webGLRender.render(scene, camera)
   // 挂载dom
   renderCanvas.appendChild(webGLRender.domElement)
+
+  // const render = () => {
+  //   textureRes.offset.x += 0.0001
+  //   mesh.rotation.x += 0.01
+  //   mesh.rotation.y += 0.03
+  //   webGLRender.render(scene, camera)
+  //   requestAnimationFrame(render)
+  // }
+  // render()
 })
 </script>
 
