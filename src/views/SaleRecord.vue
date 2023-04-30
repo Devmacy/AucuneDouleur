@@ -96,7 +96,7 @@
                   单价
                 </span>
               </template>
-              <span style="color: var(--el-color-success)">{{ recordState.goodsPrice.toFixed(1) }}元</span>
+              <span style="color: var(--el-color-success)">{{ recordState.goodsPrice.toFixed(2) }}元</span>
             </el-descriptions-item>
 
             <el-descriptions-item label="数量">
@@ -118,7 +118,7 @@
                   总价
                 </span>
               </template>
-              <span style="color: var(--el-color-danger)">{{ recordState.goodsTotalPrice.toFixed(1) }}元</span>
+              <span style="color: var(--el-color-danger)">{{ recordState.goodsTotalPrice.toFixed(2) }}元</span>
             </el-descriptions-item>
 
           </el-descriptions>
@@ -214,14 +214,14 @@ const orderScrollNumber = ref()
 
 const pushRecord = () => {
   const obj = {
-    goodsPrice: recordState.goodsPrice.toFixed(1) as unknown as number,
+    goodsPrice: recordState.goodsPrice.toFixed(2) as unknown as number,
     goodsName: recordState.goodsName,
     goodsCount: recordState.goodsCount,
-    goodsTotalPrice: recordState.goodsTotalPrice.toFixed(1) as unknown as number,
+    goodsTotalPrice: recordState.goodsTotalPrice.toFixed(2) as unknown as number,
     goodsId: recordState.goodsId,
     saleRecordTotalPrice:
         recordState.saleRecordTotalPrice !== 0
-            ? recordState.saleRecordTotalPrice.toFixed(1)
+            ? recordState.saleRecordTotalPrice.toFixed(2)
             : ''
   }
   recordState.tableData.unshift(obj)
@@ -236,14 +236,14 @@ const pushRecord = () => {
 
 const pushDeliveryPrice = () => {
   const obj = {
-    goodsPrice: recordState.goodsDeliveryPrice.toFixed(1) as unknown as number,
+    goodsPrice: recordState.goodsDeliveryPrice.toFixed(2) as unknown as number,
     goodsName: 'P',
     goodsCount: 1,
-    goodsTotalPrice: recordState.goodsDeliveryPrice.toFixed(1) as unknown as number,
+    goodsTotalPrice: recordState.goodsDeliveryPrice.toFixed(2) as unknown as number,
     goodsId: new Date().getTime().toString(),
     saleRecordTotalPrice:
         recordState.saleRecordTotalPrice !== 0
-            ? recordState.saleRecordTotalPrice.toFixed(1)
+            ? recordState.saleRecordTotalPrice.toFixed(2)
             : ''
   }
   recordState.tableData.unshift(obj)
