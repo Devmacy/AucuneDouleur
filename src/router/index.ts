@@ -74,7 +74,12 @@ const routes = [
                 path: 'uv',
                 name: 'UV',
                 component: async () => await import('@/views/three/uv/UVMapping.vue')
-            }
+            },
+            {
+                path: 'solarSystem',
+                name: 'SolarSystem',
+                component: async () => await import('@/views/three/solarSystem/SolarSystem.vue')
+            },
         ],
     },
 ]
