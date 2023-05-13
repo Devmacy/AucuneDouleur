@@ -17,6 +17,7 @@
         </el-upload>
 
         <div>
+          <el-button type="danger" @click="clearRecord">清空</el-button>
           <el-button type="primary" @click="exportSaleRecord">导出</el-button>
           <el-button @click="flagState.isShowSetting = true">设置</el-button>
         </div>
@@ -351,6 +352,10 @@ const getNumber = (event: { data: number }) => {
 const getOrderSumNumber = (event: { data: number }) => {
   const {data} = event
   recordState.saleRecordTotalPrice = data
+}
+
+const clearRecord = () => {
+  recordState.tableData = []
 }
 </script>
 
